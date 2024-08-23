@@ -4,7 +4,7 @@
     <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
       <div
-      v-for="item in items" :key="item.id"
+      v-for="( item,index ,) in items" :key="item.id"
         class="box-1"
       >
         <div class="card-container position-relative">
@@ -46,10 +46,20 @@ export default {
   data() {
     return {
       items: null,
+      coisas: null,
+      idDrink: 11369,
       currentPage: 1,
       itemsPerPage: 8,
       totalPages: 0
   }},
+  watch: {
+    urlAPI: {
+      immediate: true, // Para carregar o conteúdo na primeira vez
+      handler(newUrl) {
+        this.fetchData(newUrl);
+      }
+    }
+  },
   mounted(){
   this.fetchData();
 },
@@ -75,15 +85,16 @@ methods: {
   async fetchData() {
     //const url3 = `https://potterapi-fedeperin.vercel.app/pt/books?max=${this.itemsPerPage}`
     //const url2 = `https://virtualartexplorer.site/api/v1/museums`
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/${this.urlAPI}`
-    const urlCategory = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail`
-    const urlDrinkId = `${url}https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007`
+    const urlBase = `https://www.thecocktaildb.com/api/json/v1/1/`
+    const url = `${urlBase}${this.urlAPI}`
+
+    const urlDrinkId = `${urlBase}lookup.php?i=${this.idDrink}`;
     try {
-      const response = await axios.get(url); // Substitua pela sua URL
-      //response.then(response => (this.items = response));
-      //console.log("teste");usando
+      const response = await axios.get(url); 
+      //console.log(response.data.drinks);
       this.items = response.data.drinks.slice(0, this.itemsPerPage);
-      //this.totalPages = Math.ceil(response.data.length / this.itemsPerPage);
+      this.coisas = this.items.forEach(cata => cata).add(cata);
+      console.log(this.coisas);
     } catch (e) {
       console.error('Error fetching data:', e);
     }
@@ -97,11 +108,8 @@ methods: {
  = this.items.concat(response.data.slice(startIndex, endIndex));
       }
     }
-},
-  components: {
-    FontAwesomeIcon,
-  },
-};
+}
+}
 </script>
 
 <style scoped>

@@ -30,17 +30,17 @@
       </div>
     </div>-->
     <div class="d-flex flex-row justify-content-between flex-wrap gap-1">
-      <div id="categ-esportes" @click="loadContent('filter.php?c=Esportes')" class="category">
-        <h5 class="categ-title">Esportes</h5>
+      <div id="categ-esportes" @click="loadContent('filter.php?i=Gin')" class="category">
+        <h5 class="categ-title">Gin</h5>
       </div>
-      <div id="categ-pessoas" @click="loadContent('filter.php?c=Pessoas')" class="category">
-        <h5 class="categ-title">Pessoas</h5>
+      <div id="categ-pessoas" @click="loadContent('filter.php?i=Vodka')" class="category">
+        <h5 class="categ-title">Vodka</h5>
       </div>
-      <div id="categ-escravidao" @click="loadContent('filter.php?c=Escravidao')" class="category">
-        <h5 class="categ-title">Escravidão</h5>
+      <div id="categ-escravidao" @click="loadContent('filter.php?i=Tequila')" class="category">
+        <h5 class="categ-title">Tequila</h5>
       </div>
-      <div id="categ-cultura" @click="loadContent('filter.php?c=Cultura')" class="category">
-        <h5 class="categ-title">Cultura</h5>
+      <div id="categ-cultura" @click="loadContent('filter.php?i=Tea')" class="category">
+        <h5 class="categ-title">Tea</h5>
       </div>
     </div>
 
@@ -67,7 +67,7 @@ export default {
         "../src/assets/categorias/categ-escravidao.jpg",
         "../src/assets/categorias/categ-cultura.jpeg",
       ],
-      urlLink: "random.php"
+      urlLink: "filter.php?i=Gin"//"random.php"
     };
   },
   created() {
