@@ -1,0 +1,38 @@
+@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+#app {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  font-weight: normal;
+  background-color: #EAEAEA;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    opacity: 0.5;
+    transition: 0.3s;
+  }
+}
+
+.title-h2{
+  color: var(--vt-c-brown);
+  font-family: 'poppins';
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+.subtitle{
+  color: var(--vt-c-brown);
+  font-weight: 500;
+  font-size: 15px;
+}
