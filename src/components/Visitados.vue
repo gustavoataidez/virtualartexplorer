@@ -93,8 +93,13 @@ methods: {
       const response = await axios.get(url); 
       //console.log(response.data.drinks);
       this.items = response.data.drinks.slice(0, this.itemsPerPage);
-      this.coisas = this.items.forEach(cata => cata).add(cata);
-      console.log(this.coisas);
+      const arrays = JSON.parse(JSON.stringify(this.items));
+      console.log(arrays.map(res => res.idDrink))
+      //console.log(arraysId);
+
+
+
+      //this.coisas = this.items.forEach(cata => console.log(cata));
     } catch (e) {
       console.error('Error fetching data:', e);
     }
