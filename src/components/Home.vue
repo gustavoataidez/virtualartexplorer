@@ -55,6 +55,7 @@ import Visitados from "./Visitados.vue";
 import Disponivel from "./Disponivel.vue";
 import Footer from "./Footer.vue";
 import Header from "./Header.vue";
+import { onMounted, reactive } from 'vue';
 
 export default {
   components: { Visitados, Disponivel, Footer, Header },
@@ -67,7 +68,8 @@ export default {
         "../src/assets/categorias/categ-escravidao.jpg",
         "../src/assets/categorias/categ-cultura.jpeg",
       ],
-      urlLink: "filter.php?i=Gin"//"random.php"
+      urlLink: "filter.php?i=Gin",//"random.php",
+      
     };
   },
   created() {

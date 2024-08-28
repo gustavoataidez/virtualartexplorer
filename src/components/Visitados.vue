@@ -3,8 +3,9 @@
     <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
     <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
+      
       <div
-      v-for="( item,index ,) in items" :key="item.id"
+      v-for="( item,index) in items" :key="item.id"
         class="box-1"
       >
         <div class="card-container position-relative">
@@ -18,7 +19,7 @@
           <div class="card-overlay d-flex d-row align-items-center justify-content-center">
             <div class="content">
               <h5 class="card-title">{{ item.strDrink }}</h5>
-              <span class="text-location">{{ item.idDrink }}</span><span>{{ item.idDrink }}</span>
+              <span class="text-location">{{ item.idDrink }}</span><span> {{ categoryDrinks[index] }}</span>
 
             </div>
             <div class="">
@@ -40,17 +41,19 @@
 
 <script>
 import axios from 'axios';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { ref } from 'vue';
 
 export default {
   data() {
     return {
       items: null,
-      coisas: null,
-      idDrink: 11369,
+      idDrinks: [],
+      details: null,
+      categoryDrinks: [],
       currentPage: 1,
       itemsPerPage: 8,
-      totalPages: 0
+      totalPages: 0,
+      searchDrinksField: ref("")
   }},
   watch: {
     urlAPI: {
@@ -67,6 +70,53 @@ props: {
 urlAPI: String,
 },
 methods: {
+  abrirMuseu(idMuseum){
+    console.log(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idMuseum}`);
+    // Abre o modal com os detalhes do museu
+  },
+  async fetchData() {
+    //const url3 = `https://potterapi-fedeperin.vercel.app/pt/books?max=${this.itemsPerPage}`
+    //const url2 = `https://virtualartexplorer.site/api/v1/museums`
+    const urlBase = `https://www.thecocktaildb.com/api/json/v1/1/`
+    const url = `${urlBase}${this.urlAPI}`
+
+    try {
+      const response = await axios.get(url); 
+      this.items = response.data.drinks.slice(0, this.itemsPerPage);
+
+      const drinksGroup = JSON.parse(JSON.stringify(this.items));
+      console.log(drinksGroup);
+      drinksGroup.map(res => this.idDrinks.push(res.idDrink)); //lista de ids
+      console.log(this.idDrinks);
+
+      
+    for (let i = 8; i < 16; i++) {
+      //console.log(this.strCategory[i])
+      const newUrl = `${urlBase}lookup.php?i=${this.idDrinks[i]}`;
+      const responseCategory = await axios.get(newUrl);
+      this.details = responseCategory.data.drinks;
+      this.details.map(res => this.categoryDrinks.push(res.strCategory));
+      this.categoryDrinks[i]
+      //console.log(categoryDrinks);
+      //console.log(responseCategory);
+      
+    }
+
+      console.log(this.categoryDrinks)
+      //this.coisas = this.items.forEach(cata => console.log(cata));
+    } catch (e) {
+      console.error('Error fetching data:', e);
+    }
+  },
+    loadMore() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        this.items   
+ = this.items.concat(response.data.slice(startIndex, endIndex));
+      }
+    },
   toggleFavorite(index) {
     if (this.isFavorite(index)) {
       // Se já for favorito, remover da lista de favoritos
@@ -82,37 +132,6 @@ methods: {
   },
 
 
-  async fetchData() {
-    //const url3 = `https://potterapi-fedeperin.vercel.app/pt/books?max=${this.itemsPerPage}`
-    //const url2 = `https://virtualartexplorer.site/api/v1/museums`
-    const urlBase = `https://www.thecocktaildb.com/api/json/v1/1/`
-    const url = `${urlBase}${this.urlAPI}`
-
-    const urlDrinkId = `${urlBase}lookup.php?i=${this.idDrink}`;
-    try {
-      const response = await axios.get(url); 
-      //console.log(response.data.drinks);
-      this.items = response.data.drinks.slice(0, this.itemsPerPage);
-      const arrays = JSON.parse(JSON.stringify(this.items));
-      console.log(arrays.map(res => res.idDrink))
-      //console.log(arraysId);
-
-
-
-      //this.coisas = this.items.forEach(cata => console.log(cata));
-    } catch (e) {
-      console.error('Error fetching data:', e);
-    }
-  },
-    loadMore() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-        this.items   
- = this.items.concat(response.data.slice(startIndex, endIndex));
-      }
-    }
 }
 }
 </script>
@@ -216,10 +235,13 @@ methods: {
     width: 100%;
   }
   .card-overlay{
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+  .card-container{
+    width: 100%;
   }
   .grid{
     justify-content: center;
