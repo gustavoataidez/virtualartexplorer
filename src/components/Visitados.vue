@@ -3,7 +3,7 @@
     <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
     <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
-      
+
       <div
       v-for="( item,index) in items" :key="item.id"
         class="box-1"
@@ -18,9 +18,8 @@
           </div>
           <div class="card-overlay d-flex d-row align-items-center justify-content-center">
             <div class="content">
-              <h5 class="card-title">{{ item.strDrink }}</h5>
-              <span class="text-location">{{ item.idDrink }}</span><span> {{ categoryDrinks[index] }}</span>
-
+              <h5 class="card-title">{{ truncateTitle(item.strDrink) }} </h5>
+              <span class="text-location">{{ item.idDrink }}</span><span> {{ categoryDrinks[index] }} </span>
             </div>
             <div class="">
               <img class="icon" src="@/assets/Icons.png" alt="Icons" />
@@ -53,7 +52,6 @@ export default {
       currentPage: 1,
       itemsPerPage: 8,
       totalPages: 0,
-      searchDrinksField: ref("")
   }},
   watch: {
     urlAPI: {
@@ -74,6 +72,12 @@ methods: {
     console.log(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idMuseum}`);
     // Abre o modal com os detalhes do museu
   },
+  truncateTitle(title) {
+    if (title.length > 20) {
+      return title.substring(0, 20) + '...';
+    }
+    return title;
+  },
   async fetchData() {
     //const url3 = `https://potterapi-fedeperin.vercel.app/pt/books?max=${this.itemsPerPage}`
     //const url2 = `https://virtualartexplorer.site/api/v1/museums`
@@ -81,7 +85,7 @@ methods: {
     const url = `${urlBase}${this.urlAPI}`
 
     try {
-      const response = await axios.get(url); 
+      const response = await axios.get(url);
       this.items = response.data.drinks.slice(0, this.itemsPerPage);
 
       const drinksGroup = JSON.parse(JSON.stringify(this.items));
@@ -89,7 +93,7 @@ methods: {
       drinksGroup.map(res => this.idDrinks.push(res.idDrink)); //lista de ids
       console.log(this.idDrinks);
 
-      
+
     for (let i = 8; i < 16; i++) {
       //console.log(this.strCategory[i])
       const newUrl = `${urlBase}lookup.php?i=${this.idDrinks[i]}`;
@@ -99,7 +103,7 @@ methods: {
       this.categoryDrinks[i]
       //console.log(categoryDrinks);
       //console.log(responseCategory);
-      
+
     }
 
       console.log(this.categoryDrinks)
@@ -113,7 +117,7 @@ methods: {
         this.currentPage++;
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         const endIndex = startIndex + this.itemsPerPage;
-        this.items   
+        this.items  
  = this.items.concat(response.data.slice(startIndex, endIndex));
       }
     },

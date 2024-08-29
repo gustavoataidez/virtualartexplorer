@@ -68,8 +68,8 @@ export default {
         "../src/assets/categorias/categ-escravidao.jpg",
         "../src/assets/categorias/categ-cultura.jpeg",
       ],
-      urlLink: "filter.php?i=Gin",//"random.php",
-      
+    urlLink: "filter.php?i=Gin",//"random.php",
+
     };
   },
   created() {

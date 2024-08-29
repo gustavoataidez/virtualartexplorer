@@ -12,7 +12,7 @@ export default {
   mounted() {
     console.log("::: Virtual Art Explorer - PI 2024");
     console.log(
-      "::: Developed by: @adreoluiz, @gustavoataidez, @IsaqueLemos e @naomysilva "
+      "::: Developed by: @adreoluiz, @gustavoataidez e @IsaqueLemos"
     );
   },
 };
