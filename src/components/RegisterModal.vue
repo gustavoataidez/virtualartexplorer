@@ -1,7 +1,7 @@
 <template>
     <div id="background" v-if="registerActive" >
     <div class="backdrop px-10">
-        <h2><a v-on:click="closeRegister">⭠</a>Register</h2>
+        <h2><a v-on:click="closeRegister">⬅</a>Register</h2>
         <form class="forms" @submit.prevent="realizarRegister">
             <div class="caixa-form">
                 <label for="ger_firstname" class="required">Nome</label>
@@ -103,7 +103,7 @@ h2{
     padding: 0% 1%;
 }
 .btn-login{
-    background-color: var(--color-orange);
+    background-color: var(--vt-c-orange);
     border: 0px;
     border-radius: 50px;
     font-size: 0.9rem;

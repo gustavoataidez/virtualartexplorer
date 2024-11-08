@@ -1,7 +1,7 @@
 <template>
     <div id="background" v-if="loginActive" >
     <div class="backdrop">
-        <h2><a v-on:click="closeLogin">⭠</a>Login</h2>
+        <h2><a v-on:click="closeLogin">⬅</a>Login</h2>
         <form @submit.prevent="realizarLogin">
                 <label for="email">E-mail</label>
                 <input class="input-text" type="email" placeholder="Digite seu email">
@@ -9,7 +9,7 @@
                 <input class="input-text" type="password" placeholder="Digite sua senha">
                 <input class="btn-login" type="submit" value="Login">
             </form>
-            <p>Não tem uma conta? <a href="./Register.vue">Resgistrar-se</a></p>
+            <p>Não tem uma conta? <a href="./Register.vue" >Resgistrar-se</a></p>
     </div>
     </div>
 </template>
@@ -90,7 +90,7 @@ form{
     outline: 0;
 }
 .btn-login{
-    background-color: var(--color-orange);
+    background-color: var(--vt-c-orange);
     border: 0px;
     border-radius: 50px;
     font-size: 0.9rem;
