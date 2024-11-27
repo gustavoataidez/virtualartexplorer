@@ -3,11 +3,11 @@
 
   <div class="image-container">
     <h1 class="image-text">
-      Tenha Uma Incrível <br />
-      <span>Experiência</span> Aqui!
-    </h1>
+      Tenha uma incrível <br />
+      <span>experiência</span> aqui!
+    </h1><!--
     <div class="input-div">
-      <input
+       <input
         type="text"
         class="input-overlay"
         placeholder="Procure por Museu, Cidade, Estado...." :value="valor"
@@ -17,7 +17,7 @@
           <font-awesome-icon icon="search" class="search-icon" size="lg" />
         </button>
       </router-link>
-    </div>
+    </div>-->
   </div>
 
   <div class="page container-sm px-5 my-5">
@@ -129,7 +129,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 600px;
+  height: 500px;
   gap: 20px;
 }
 #categ-esportes {
@@ -184,12 +184,12 @@ export default {
   color: white;
   text-align: center;
   font-size: 3.5rem;
-  font-weight: bold;
+  font-weight: 500;
   font-family: "Poppins", sans-serif;
 }
 
 span {
-  font-weight: bold;
+  font-weight: 600;
   font-family: "Poppins", sans-serif;
   color: var(--vt-c-orange);
 }

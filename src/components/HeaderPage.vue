@@ -90,7 +90,7 @@ export default {
 .fundo {
   position: relative;
   background-color: var(--vt-c-header);
-  width: 99%;
+  width: 100%;
   z-index: 20;
 }
 .logo {

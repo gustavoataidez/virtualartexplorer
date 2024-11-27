@@ -90,7 +90,7 @@ export default {
 .fundo {
   position: absolute;
   background-color: rgb(0, 0, 0, 0);
-  width: 99%;
+  width: 100%;
   z-index: 20;
 }
 .logo {

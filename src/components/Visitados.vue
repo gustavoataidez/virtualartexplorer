@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5 container p-0" style="width: 100%;">
     <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
-    <h2 class="title-h2">Mais visitados</h2>
+    <h2 class="title-h2">Mais visitados </h2>
     <div class="grid">
       <div
       v-for="( item,index ,) in items" :key="item.id"
@@ -40,14 +40,13 @@
 
 <script>
 import axios from 'axios';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
   data() {
     return {
       items: null,
-      coisas: null,
-      idDrink: 11369,
+      drinkDetails: null,
+      idDrinks: [],
       currentPage: 1,
       itemsPerPage: 8,
       totalPages: 0
@@ -62,6 +61,7 @@ export default {
   },
   mounted(){
   this.fetchData();
+  //this.fetchDrinkDetails(this.items.idDrink);
 },
 props: {
 urlAPI: String,
@@ -91,14 +91,50 @@ methods: {
     const urlDrinkId = `${urlBase}lookup.php?i=${this.idDrink}`;
     try {
       const response = await axios.get(url); 
-      //console.log(response.data.drinks);
       this.items = response.data.drinks.slice(0, this.itemsPerPage);
-      this.coisas = this.items.forEach(cata => cata).add(cata);
-      console.log(this.coisas);
+      const teste = [];
+      this.items.map(element => {
+        teste.push(element.idDrink)
+        this.idDrinks.push(element.idDrink)
+      })
+      console.log(teste)
+      console.log(this.idDrinks)
+      console.log("-------------1")
+
+
+
+
+
+
+
+
+
+
+
+      /*
+      this.idDrink = response.data.drinks.push(this.items.idDrink)
+      console.log(urlDrinkId)*/
     } catch (e) {
       console.error('Error fetching data:', e);
     }
   },
+    async fetchDrinkDetails(idDrink) {
+      const urlBase = `https://www.thecocktaildb.com/api/json/v1/1/`;
+      const urlDrinkId = `${urlBase}lookup.php?i=${idDrink}`;
+
+      try {
+        const response = await axios.get(urlDrinkId);
+        console.log(urlDrinkId)
+        this.drinkDetails = response.data.drinks[0];
+        console.log("passou aqui")
+      } catch (e) {
+        console.error('Error fetching drink details:', e);
+      }
+    },
+
+
+
+
     loadMore() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
@@ -211,10 +247,11 @@ methods: {
     width: 100%;
   }
   .card-overlay{
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    left: 0%;
   }
   .grid{
     justify-content: center;
