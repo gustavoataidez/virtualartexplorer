@@ -1,49 +1,79 @@
 <template>
-    <div id="background" v-if="loginActive" >
-    <div class="backdrop">
+    <div id="background" v-if="loginActive">
+      <div class="backdrop">
         <h2><a v-on:click="closeLogin">⬅</a>Login</h2>
         <form @submit.prevent="realizarLogin">
-                <label for="email">E-mail</label>
-                <input class="input-text" type="email" placeholder="Digite seu email">
-                <label for="password">Senha</label>
-                <input class="input-text" type="password" placeholder="Digite sua senha">
-                <input class="btn-login" type="submit" value="Login">
-            </form>
-            <p>Não tem uma conta? <a href="./Register.vue" >Resgistrar-se</a></p>
+          <label for="email">E-mail</label>
+          <input
+            class="input-text"
+            type="email"
+            v-model="email"
+            placeholder="Digite seu email"
+            required
+          />
+          <label for="password">Senha</label>
+          <input
+            class="input-text"
+            type="password"
+            v-model="password"
+            placeholder="Digite sua senha"
+            required
+          />
+          <input class="btn-login" type="submit" value="Login" />
+        </form>
+        <p>
+          Não tem uma conta?
+          <a href="./Register.vue">Registrar-se</a>
+        </p>
+      </div>
     </div>
-    </div>
-</template>
-
-<script>
-import RegisterModal from "./RegisterModal.vue";
-
-export default {
-  components: { RegisterModal },
-  name: 'LoginModal',
-  data(){
-    return{
+  </template>
+  
+  <script>
+  import axios from "axios";
+  
+  export default {
+    name: "LoginModal",
+    data() {
+      return {
         loginActive: true,
-        registerActive: false,
-    }
-  },
-    methods:{
-        realizarLogin() {
-        // Lógica para realizar o login
-        },
-        openLogin: function(){
-            this.loginActive = true;
-        },
-        closeLogin: function(){
-            this.loginActive = false;
-            this.$emit('closeLog')
-        },
-        openRegister() {
-            this.registerActive = true;
+        email: "",
+        password: "",
+      };
+    },
+    methods: {
+      async realizarLogin() {
+        try {
+          const response = await axios.post("http://localhost:3000/auth/login", {
+            email: this.email,
+            password: this.password,
+          });
+  
+          if (response.data && response.data.token) {
+            // Salva o token no localStorage
+            localStorage.setItem("authToken", response.data.token);
+  
+            // Emite o evento com o email do usuário
+            this.$emit("userLoggedIn", this.email);
+  
+            // Fecha o modal
+            this.closeLogin();
+          } else {
+            alert("Login falhou. Tente novamente.");
+          }
+        } catch (error) {
+          console.error("Erro ao realizar login:", error);
+          alert("Credenciais inválidas.");
         }
-    }
-  }
-</script>
-
+      },
+      closeLogin() {
+        this.loginActive = false;
+        this.$emit("closeLog");
+      },
+    },
+  };
+  </script>
+  
 <style scoped>
 #background{
     height: 100%;

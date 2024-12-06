@@ -18,10 +18,10 @@
                 <p style="line-height: 1.5rem;">{{ museum.information }}</p>
                 <div id="endereco" class="d-flex flex-row align-items-center">
                     <img style="width: 60px; margin-right: 10px;" src="../assets/location.png" alt="Localização">
-                    <p style="line-height: 1.5rem; margin-bottom: 0rem; font-weight: 500;">
+                    <p style="line-height: 1.5rem; margin-bottom: 0rem; font-weight: 500; color: var(--vt-c-brown);">
                         {{ museum.address }}<br>
-                        <span id="city-museum">{{ museum.city }}</span> -
-                        <span id="state-museum">{{ museum.state }}</span>
+                        <span id="city-museum" class="address-page">{{ museum.city }}</span> -
+                        <span id="state-museum" class="address-page">{{ museum.state }}</span>
                     </p>
                 </div>
             </div>
@@ -82,6 +82,9 @@ export default {
 </script>
 
 <style>
+.address-page{
+    color: var(--vt-c-brown);
+}
 .museu-page{
     font-family: 'Poppins';
     width: 90vw;

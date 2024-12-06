@@ -27,3 +27,17 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Init jason-server
+
+```sh
+json-server --watch db.json
+```
+
+### Init jason-server
+
+```sh
+npm install cors
+
+node server.js
+```

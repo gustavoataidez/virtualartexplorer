@@ -1,14 +1,19 @@
 <template>
   <div class="mt-5 container p-0" style="width: 100%;">
-    <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
-    <h2 class="title-h2">Mais visitados </h2>
+
+    <span class="subtitle">Conheça os museus mais procurados</span>
+    <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
-      <div v-for="(museum, index) in items" :key="museum.id" class="box-1">
+      <div
+        v-for="(museum, index) in items"
+        :key="museum.id"
+        class="box-1"
+      >
         <div class="card-container position-relative">
           <div class="img">
             <img
               :src="museum.image"
-              :alt="'Imagem do ' + museum.title"
+              :alt="'Imagem do ' + museum.title + (index + 1)"
               class="card-img-top"
             />
           </div>
@@ -16,7 +21,14 @@
             <div class="content">
               <h5 class="card-title">{{ truncateTitle(museum.title) }}</h5>
               <span class="text-location">{{ museum.city }}, {{ museum.state }}</span>
-              <p class="text-description">{{ museum.category1	}}, {{ museum.category2	}}</p>
+              <p class="text-description">{{ museum.category1 }}, {{ museum.category2 }}</p>
+              <!-- Botão Saber Mais -->
+              <button 
+                class="btn1 btn-primary mt-2"
+                @click="goToMuseum(museum.id)"
+              >
+                Saber Mais
+              </button>
             </div>
           </div>
         </div>
@@ -31,9 +43,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      items: [], // Lista de museus
-      currentPage: 1, // Página atual para paginação
-      itemsPerPage: 8 // Número de itens por página
+      items: [] // Lista de museus
     };
   },
   mounted() {
@@ -51,22 +61,35 @@ export default {
 
       try {
         const response = await axios.get(url);
-        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-        this.items = response.data.slice(startIndex, endIndex);
+        this.items = response.data; // Obtém todos os museus
       } catch (e) {
         console.error("Error fetching data:", e);
       }
+    },
+    goToMuseum(id) {
+      this.$router.push(`/museum/${id}`); // Navega para a página do museu pelo ID
     }
   }
 };
 </script>
 
-
 <style scoped>
+/* Estilo opcional para o botão Saber Mais */
+.btn1 {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background-color: #fff;
+  font-family: 'poppins';
+  color: var(--vt-c-orange);
+  font-size: 16px;
+  font-weight: 500;
+  border: solid 2px var(--vt-c-orange);
+}
 .text-description{
   margin-bottom: 0rem;
-  color: var(--vt-c-orange);
+  color: var(--vt-c-brown);
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -82,6 +105,7 @@ export default {
   justify-content: center;
   max-width: 400px;
   min-width: 200px;
+  margin-bottom: 20px;
 }
 .card-container {
   position: relative;

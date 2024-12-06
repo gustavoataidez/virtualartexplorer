@@ -21,7 +21,7 @@
   </div>
 
   <div class="page container-sm px-5 my-5">
-    <span class="subtitle">Encontre pelo seu gosto</span>
+    <span class="subtitle">Mais procuradas</span>
     <h2 class="title-h2 mb-4">Categorias</h2>
     <!--
     <div class="row justify-content-md-center">
@@ -31,16 +31,16 @@
     </div>-->
     <div class="d-flex flex-row justify-content-between flex-wrap gap-1">
       <div id="categ-esportes" @click="loadContent('filter.php?i=Gin')" class="category">
-        <h5 class="categ-title">Gin</h5>
+        <h5 class="categ-title">Esportes</h5>
       </div>
       <div id="categ-pessoas" @click="loadContent('filter.php?i=Vodka')" class="category">
-        <h5 class="categ-title">Vodka</h5>
+        <h5 class="categ-title">Pessoas</h5>
       </div>
       <div id="categ-escravidao" @click="loadContent('filter.php?i=Tequila')" class="category">
-        <h5 class="categ-title">Tequila</h5>
+        <h5 class="categ-title">EScravidão</h5>
       </div>
       <div id="categ-cultura" @click="loadContent('filter.php?i=Tea')" class="category">
-        <h5 class="categ-title">Tea</h5>
+        <h5 class="categ-title">Cultura</h5>
       </div>
     </div>
 
@@ -114,12 +114,12 @@ export default {
   justify-content: center;
   width: 23%;
   min-width: 200px;
-}
+}/*
 .category:hover {
   cursor: pointer;
   transform: scale(1.02);
   transition: 0.5s;
-}
+}*/
 .image-container {
   padding-top: 100px;
   background-image: url("../assets/categorias/capa-museu2.jpg");

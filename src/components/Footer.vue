@@ -129,7 +129,7 @@ export default {
 footer {
   background-color: var(--vt-c-header) !important;
   width: 100%;
-  z-index: 20;
+  z-index: 8;
   position: relative;
 }
 
