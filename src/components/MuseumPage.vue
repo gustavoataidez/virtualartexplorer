@@ -1,29 +1,40 @@
 <template>
     <Header></Header>
-    <div class="museu-page">
+    <div class="museu-page" v-if="museum">
         <div class="sec-resume">
-            <div class="capa-museu"></div>
+            <div 
+  class="capa-museu" 
+  :style="{ backgroundImage: `url(${museum.image})` }"
+>
+</div>
+
             <div class="resume-desc">
-                <span id="category-museum" class="badge rounded-pill text-bg-warning mb-2">Categoria</span>
-                <h1>Museu Théo Brandão</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus totam sit nostrum dicta assumenda, officia atque facilis esse quasi eum perferendis vel aliquam reiciendis rem tempora quod doloribus maxime voluptas!</p>
+                <span id="category-museum" class="badge rounded-pill text-bg-warning mb-2">
+                    {{ museum.category1 }}, {{ museum.category2 }}
+                </span>
+                <h1>{{ museum.title }}</h1>
+                <p>{{ museum.description }}</p>
                 <h6 style="font-weight: 600; font-size: 1rem;">Mais informações</h6>
-                <p style="line-height: 1.5rem;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo aperiam eos eligendi explicabo </p>
-            <div id="endereco" class="d-flex flex-row align-items-center">
-                <img style="width: 60px; margin-right: 10px ;" src="../assets/location.png" alt="">
-                <p style="line-height: 1.5rem; margin-bottom: 0rem;font-weight: 500;">Av. da Paz, 1490, Centro<br><span id="city-museum">Maceió</span> - <span id="state-museum">AL</span></p>
+                <p style="line-height: 1.5rem;">{{ museum.information }}</p>
+                <div id="endereco" class="d-flex flex-row align-items-center">
+                    <img style="width: 60px; margin-right: 10px;" src="../assets/location.png" alt="Localização">
+                    <p style="line-height: 1.5rem; margin-bottom: 0rem; font-weight: 500;">
+                        {{ museum.address }}<br>
+                        <span id="city-museum">{{ museum.city }}</span> -
+                        <span id="state-museum">{{ museum.state }}</span>
+                    </p>
+                </div>
             </div>
-            </div>
-            
-            </div>
+        </div>
         <div class="sec-obras">
-            <span style="font-weight: 600;color: var(--vt-c-brown);line-height: 1rem;">Explore mais</span>
+            <span style="font-weight: 600; color: var(--vt-c-brown); line-height: 1rem;">Explore mais</span>
             <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
             <div class="grade-obras">
-            <BoxArtwork></BoxArtwork>
-            <BoxArtwork></BoxArtwork>
-            <BoxArtwork></BoxArtwork>
-            <BoxArtwork></BoxArtwork>
+                <BoxArtwork
+                    v-for="artwork in artworks"
+                    :key="artwork.id"
+                    :artwork="artwork"
+                />
             </div>
         </div>
     </div>
@@ -34,18 +45,41 @@
 import Header from "./HeaderPage.vue";
 import Footer from "./Footer.vue";
 import BoxArtwork from "./BoxArtwork.vue";
-
+import axios from "axios";
 
 export default {
-  components: {BoxArtwork,Header,Footer},
-  data() {
-    return {
-    };
-  },
+    components: { BoxArtwork, Header, Footer },
+    data() {
+        return {
+            museum: null, // Dados do museu
+            artworks: [] // Obras do museu
+        };
+    },
+    async created() {
+        const museumId = this.$route.params.id; // Obtém o ID do museu da URL
+        await this.fetchMuseum(museumId);
+        await this.fetchArtworks(museumId);
+    },
+    methods: {
+        async fetchMuseum(id) {
+            try {
+                const response = await axios.get(`http://localhost:3000/museums/${id}`);
+                this.museum = response.data;
+            } catch (error) {
+                console.error("Erro ao buscar o museu:", error);
+            }
+        },
+        async fetchArtworks(museumId) {
+            try {
+                const response = await axios.get(`http://localhost:3000/artworks?museum_id=${museumId}`);
+                this.artworks = response.data;
+            } catch (error) {
+                console.error("Erro ao buscar as obras:", error);
+            }
+        }
+    }
 };
-
 </script>
-
 
 <style>
 .museu-page{
@@ -73,14 +107,15 @@ export default {
 .resume-desc p{
     font-size: 0.9rem;
 }
-.capa-museu{
+.capa-museu {
     width: 50%;
     height: 400px;
     border-radius: 50px;
-    background-image: url('../assets/museus/museu-theo-brandao.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
 }
+
 .grade-obras{
     display: flex;
     flex-direction: row;

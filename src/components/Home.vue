@@ -5,7 +5,7 @@
     <h1 class="image-text">
       Tenha Uma Incrível <br />
       <span>Experiência</span> Aqui!
-    </h1>
+    </h1><!--
     <div class="input-div">
       <input
         type="text"
@@ -17,7 +17,7 @@
           <font-awesome-icon icon="search" class="search-icon" size="lg" />
         </button>
       </router-link>
-    </div>
+    </div>-->
   </div>
 
   <div class="page container-sm px-5 my-5">
@@ -131,7 +131,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 600px;
+  height: 500px;
   gap: 20px;
 }
 #categ-esportes {

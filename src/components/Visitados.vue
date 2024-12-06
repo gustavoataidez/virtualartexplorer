@@ -1,146 +1,74 @@
 <template>
   <div class="mt-5 container p-0" style="width: 100%;">
-    <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
     <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
-
-      <div
-      v-for="( item,index) in items" :key="item.id"
-        class="box-1"
-      >
+      <div v-for="(museum, index) in items" :key="museum.id" class="box-1">
         <div class="card-container position-relative">
           <div class="img">
             <img
-              :src="item.strDrinkThumb"
-              :alt="'Imagem ' + (index + 1)"
+              :src="museum.image"
+              :alt="'Imagem do ' + museum.title"
               class="card-img-top"
             />
           </div>
-          <div class="card-overlay d-flex d-row align-items-center justify-content-center">
+          <div class="card-overlay d-flex flex-column align-items-center justify-content-center">
             <div class="content">
-              <h5 class="card-title">{{ truncateTitle(item.strDrink) }} </h5>
-              <span class="text-location">{{ item.idDrink }}</span><span> {{ categoryDrinks[index] }} </span>
-            </div>
-            <div class="">
-              <img class="icon" src="@/assets/Icons.png" alt="Icons" />
+              <h5 class="card-title">{{ truncateTitle(museum.title) }}</h5>
+              <span class="text-location">{{ museum.city }}, {{ museum.state }}</span>
+              <p class="text-description">{{ museum.category1	}}, {{ museum.category2	}}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row justify-content-center mt-5">
-      <button type="button" class="btn btn-warning w-25 mb-4">
-        Mais Museus
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white" width="20px"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
-
-      </button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { ref } from 'vue';
 
 export default {
   data() {
     return {
-      items: null,
-      idDrinks: [],
-      details: null,
-      categoryDrinks: [],
-      currentPage: 1,
-      itemsPerPage: 8,
-      totalPages: 0,
-  }},
-  watch: {
-    urlAPI: {
-      immediate: true, // Para carregar o conteúdo na primeira vez
-      handler(newUrl) {
-        this.fetchData(newUrl);
+      items: [], // Lista de museus
+      currentPage: 1, // Página atual para paginação
+      itemsPerPage: 8 // Número de itens por página
+    };
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    truncateTitle(title) {
+      if (title.length > 20) {
+        return title.substring(0, 20) + "...";
       }
-    }
-  },
-  mounted(){
-  this.fetchData();
-},
-props: {
-urlAPI: String,
-},
-methods: {
-  abrirMuseu(idMuseum){
-    console.log(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idMuseum}`);
-    // Abre o modal com os detalhes do museu
-  },
-  truncateTitle(title) {
-    if (title.length > 20) {
-      return title.substring(0, 20) + '...';
-    }
-    return title;
-  },
-  async fetchData() {
-    //const url3 = `https://potterapi-fedeperin.vercel.app/pt/books?max=${this.itemsPerPage}`
-    //const url2 = `https://virtualartexplorer.site/api/v1/museums`
-    const urlBase = `https://www.thecocktaildb.com/api/json/v1/1/`
-    const url = `${urlBase}${this.urlAPI}`
+      return title;
+    },
+    async fetchData() {
+      const url = `http://localhost:3000/museums`;
 
-    try {
-      const response = await axios.get(url);
-      this.items = response.data.drinks.slice(0, this.itemsPerPage);
-
-      const drinksGroup = JSON.parse(JSON.stringify(this.items));
-      console.log(drinksGroup);
-      drinksGroup.map(res => this.idDrinks.push(res.idDrink)); //lista de ids
-      console.log(this.idDrinks);
-
-
-    for (let i = 8; i < 16; i++) {
-      //console.log(this.strCategory[i])
-      const newUrl = `${urlBase}lookup.php?i=${this.idDrinks[i]}`;
-      const responseCategory = await axios.get(newUrl);
-      this.details = responseCategory.data.drinks;
-      this.details.map(res => this.categoryDrinks.push(res.strCategory));
-      this.categoryDrinks[i]
-      //console.log(categoryDrinks);
-      //console.log(responseCategory);
-
-    }
-
-      console.log(this.categoryDrinks)
-      //this.coisas = this.items.forEach(cata => console.log(cata));
-    } catch (e) {
-      console.error('Error fetching data:', e);
-    }
-  },
-    loadMore() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
+      try {
+        const response = await axios.get(url);
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         const endIndex = startIndex + this.itemsPerPage;
-        this.items  
- = this.items.concat(response.data.slice(startIndex, endIndex));
+        this.items = response.data.slice(startIndex, endIndex);
+      } catch (e) {
+        console.error("Error fetching data:", e);
       }
-    },
-  toggleFavorite(index) {
-    if (this.isFavorite(index)) {
-      // Se já for favorito, remover da lista de favoritos
-      this.favorites.splice(this.favorites.indexOf(index), 1);
-    } else {
-      // Se não for favorito, adicionar à lista de favoritos
-      this.favorites.push(index);
     }
-  },
-  isFavorite(index) {
-    // Verificar se o item está na lista de favoritos
-    return this.favorites.includes(index);
-  },
-
-
-}
-}
+  }
+};
 </script>
 
+
 <style scoped>
+.text-description{
+  margin-bottom: 0rem;
+  color: var(--vt-c-orange);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
 .grid{
   display: flex;
   flex-wrap: wrap;
@@ -165,7 +93,7 @@ methods: {
   margin-top: -50px;
   width: 100%; /* Ajuste conforme necessário */
   background-color: rgba(255, 255, 255, 1);
-  padding: 10px;
+  padding: 10px 15px;
   border-radius: 16px;
   z-index: 5;
   color: var(--vt-c-brown);

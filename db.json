@@ -1,0 +1,133 @@
+{
+  "museums": [
+    {
+      "id": 1,
+      "title": "Museu de Arte Moderna",
+      "description": "Um museu dedicado à arte moderna.",
+      "image": "https://www.mamrio.com.br/imagenes-artigos/mam-rio.jpeg",
+      "category1": "Arte",
+      "category2": "Moderna",
+      "link": "http://museudearte.com",
+      "address": "Rua das Flores, 123",
+      "cep": "12345-678",
+      "city": "São Paulo",
+      "state": "SP",
+      "information": "Aberto de terça a domingo, das 10h às 18h.",
+      "manager_id": 1
+    },
+    {
+      "id": 2,
+      "title": "Museu de História Natural",
+      "description": "Explorando a história do mundo natural.",
+      "image": "https://artequeacontece.com.br/wp-content/uploads/2023/02/53271175-40373462.jpeg",
+      "category1": "Ciência",
+      "category2": "História Natural",
+      "link": "http://historia-natural.com",
+      "address": "Avenida Central, 456",
+      "cep": "98765-432",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "information": "Visitas guiadas disponíveis.",
+      "manager_id": 2
+    },
+    {
+      "id": 3,
+      "title": "Museu do Esporte Nacional",
+      "description": "Celebrando a história e conquistas do esporte brasileiro.",
+      "image": "https://www.sobrevivaemsaopaulo.com.br/wp-content/uploads/2019/04/Museu-do-Futebol-home-inside.jpg",
+      "category1": "Esportes",
+      "category2": "História",
+      "link": "http://museudoesporte.com",
+      "address": "Praça do Atleta, 789",
+      "cep": "11223-445",
+      "city": "Curitiba",
+      "state": "PR",
+      "information": "Inclui exposições sobre futebol, vôlei e outros esportes.",
+      "manager_id": 3
+    },
+    {
+      "id": 4,
+      "title": "Museu das Pessoas Notáveis",
+      "description": "Um tributo às figuras históricas e personalidades que marcaram a história.",
+      "image": "https://spcity.com.br/wp-content/uploads/2018/02/infojovem.jpg",
+      "category1": "História",
+      "category2": "Pessoas",
+      "link": "http://museupessoas.com",
+      "address": "Alameda da Fama, 101",
+      "cep": "55678-909",
+      "city": "Porto Alegre",
+      "state": "RS",
+      "information": "Aberto diariamente com exposições interativas.",
+      "manager_id": 4
+    },
+    {
+      "id": 5,
+      "title": "Museu da Abolição",
+      "description": "Explorando a história da escravidão e sua abolição no Brasil.",
+      "image": "https://images02.brasildefato.com.br/97f9f219474144e817bfe639c7ffb7b1.jpeg",
+      "category1": "História",
+      "category2": "Escravidão",
+      "link": "http://museudaescravidao.com",
+      "address": "Rua da Resistência, 202",
+      "cep": "77889-101",
+      "city": "Salvador",
+      "state": "BA",
+      "information": "Exposições sobre escravidão e movimentos abolicionistas.",
+      "manager_id": 5
+    },
+    {
+      "id": 6,
+      "title": "Museu de Cultura Popular",
+      "description": "Um espaço dedicado à celebração da cultura e tradições populares do Brasil.",
+      "image": "https://agorarn.com.br/files/uploads/2023/05/AG-diversao-museus-folcloricos-museu-cultura-popular-djalma-maranhao-D-732x412-1.jpg",
+      "category1": "Cultura",
+      "category2": "Tradições",
+      "link": "http://museucultura.com",
+      "address": "Avenida das Tradições, 303",
+      "cep": "88900-111",
+      "city": "Recife",
+      "state": "PE",
+      "information": "Inclui exposições sobre danças, culinária e festivais regionais.",
+      "manager_id": 6
+    }
+  ],
+  "managers": [
+    {
+      "id": 1,
+      "name": "João",
+      "surname": "Silva",
+      "email": "joao.silva@museu.com",
+      "password": "hashed_password_here"
+    },
+    {
+      "id": 2,
+      "name": "Maria",
+      "surname": "Oliveira",
+      "email": "maria.oliveira@museu.com",
+      "password": "hashed_password_here"
+    }
+  ],
+  "artworks": [
+    {
+      "id": 1,
+      "museum_id": 1,
+      "name": "Abstração em Vermelho",
+      "description": "Uma pintura abstrata com tons vibrantes de vermelho.",
+      "author": "Artista Desconhecido"
+    },
+    {
+      "id": 2,
+      "museum_id": 1,
+      "name": "Paisagem Moderna",
+      "description": "Uma releitura moderna de uma paisagem natural.",
+      "author": "Clara Almeida"
+    },
+    {
+      "id": 3,
+      "museum_id": 2,
+      "name": "Fóssil de Tiranossauro Rex",
+      "description": "Um fóssil real de um T-Rex, datado de milhões de anos.",
+      "author": "Equipe Paleontológica"
+    }
+  ]
+}
