@@ -128,6 +128,9 @@ export default {
 }
 footer {
   background-color: var(--vt-c-header) !important;
+  width: 100%;
+  z-index: 20;
+  position: relative;
 }
 
 .img-seta{

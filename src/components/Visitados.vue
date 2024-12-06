@@ -1,6 +1,7 @@
 <template>
   <div class="mt-5 container p-0" style="width: 100%;">
-    <h2 class="title-h2">Mais visitados</h2>
+    <span class="subtitle" > Tópicos para você {{ urlAPI }} </span>
+    <h2 class="title-h2">Mais visitados </h2>
     <div class="grid">
       <div v-for="(museum, index) in items" :key="museum.id" class="box-1">
         <div class="card-container position-relative">
@@ -168,9 +169,14 @@ export default {
   }
   .card-overlay{
     width: 100%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    left: 0%;
+  }
+  .card-container{
+    width: 100%;
   }
   .card-container{
     width: 100%;

@@ -1,5 +1,6 @@
 <template>
     <HeaderNovo></HeaderNovo>
+    
 <div class="museu-page">
     <div class="sec-resume">
 
@@ -57,37 +58,174 @@
     <textarea class="form__field texto" placeholder="Coloque aqui informações como endereço, contato, redes sociais..." name="obs"></textarea>
     <button class="btn btn-success">Salvar</button>
 </div>
-        </div>
-    </div>
-    <div class="sec-obras">
-        <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
-        <div class="grade-obras">
-        <button class="btn btn-primary">Adicionar Obra</button>
-        </div>
-    </div>
 </div>
-<FooterNovo></FooterNovo>
+</div>
+
+    <div class="sec-obras">
+      <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
+      <div class="grade-obras">
+        <button class="btn btn-primary" @click="showForm = true">Adicionar Obra</button>
+      </div>
+    </div>
+
+   
+
+  </div>
+   <!-- Formulário Modal -->
+   <div v-if="showForm" class="modal-overlay">
+      <div class="modal-form">
+        <button class="close-button" @click="showForm = false">×</button>
+        <h3>Adicionar Nova Obra</h3>
+        <form @submit.prevent="submitForm">
+          <div class="form-group">
+            <label for="titulo">Título</label>
+            <input
+              type="text"
+              id="titulo"
+              v-model="form.titulo"
+              placeholder="Título da Obra"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea
+              id="descricao"
+              v-model="form.descricao"
+              placeholder="Descrição da Obra"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="capa">Capa</label>
+            <input
+              type="file"
+              id="capa"
+              @change="onFileChange"
+              accept="image/*"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success">Salvar</button>
+        </form>
+    </div></div>
+    <FooterNovo></FooterNovo>
 </template>
 
 <script>
 import HeaderNovo from "./HeaderPage.vue";
 import FooterNovo from "./Footer.vue";
-import BoxArtwork from "./BoxArtwork.vue";
-
 
 export default {
-components: {HeaderNovo,BoxArtwork,FooterNovo},
-data() {
-return {
-};
-},
-};
+  components: { HeaderNovo, FooterNovo },
+  data() {
+    return {
+      showForm: false,
+      form: {
+        titulo: "",
+        descricao: "",
+        capa: null,
+      },
+    };
+  },
+  methods: {
+    onFileChange(event) {
+      const file = event.target.files[0];
+      this.form.capa = file;
+    },
+    async submitForm() {
+      if (!this.form.titulo || !this.form.descricao || !this.form.capa) {
+        alert("Todos os campos são obrigatórios!");
+        return;
+      }
 
+      const formData = new FormData();
+      formData.append("titulo", this.form.titulo);
+      formData.append("descricao", this.form.descricao);
+      formData.append("capa", this.form.capa);
+
+      try {
+        const response = await fetch("https://sua-api.com/cadastrar-obra", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          alert("Obra cadastrada com sucesso!");
+          this.showForm = false;
+          this.resetForm();
+        } else {
+          alert("Erro ao cadastrar a obra.");
+        }
+      } catch (error) {
+        console.error("Erro ao cadastrar:", error);
+        alert("Erro ao cadastrar a obra.");
+      }
+    },
+    resetForm() {
+      this.form.titulo = "";
+      this.form.descricao = "";
+      this.form.capa = null;
+    },
+  },
+};
 </script>
 
-#e2e2e2
+<style scoped>
+/* Estilização do modal */
+.modal-overlay {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
 
-<style>
+.modal-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;    
+  position: absolute;
+    max-width: 400px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
 .form__group {
   position: relative;
   padding: 20px 0;
@@ -186,21 +324,6 @@ border-radius: 50px;
 }
 
 
-
-
-
-.museu-page{
-font-family: 'Poppins';
-width: 90vw;
-margin-left: 50%;
-transform: translate(-50%,0);
-padding: 50px;
-max-width: 1200px;
-color: var(--vt-c-brown);
-display: flex;
-flex-direction: column;
-gap: 50px;
-}
 .sec-resume{
 display: flex;
 flex-direction: row;

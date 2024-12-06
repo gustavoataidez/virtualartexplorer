@@ -3,11 +3,11 @@
 
   <div class="image-container">
     <h1 class="image-text">
-      Tenha Uma Incrível <br />
-      <span>Experiência</span> Aqui!
+      Tenha uma incrível <br />
+      <span>experiência</span> aqui!
     </h1><!--
     <div class="input-div">
-      <input
+       <input
         type="text"
         class="input-overlay"
         placeholder="Procure por Museu, Cidade, Estado...." :value="valor"
@@ -186,12 +186,12 @@ export default {
   color: white;
   text-align: center;
   font-size: 3.5rem;
-  font-weight: bold;
+  font-weight: 500;
   font-family: "Poppins", sans-serif;
 }
 
 span {
-  font-weight: bold;
+  font-weight: 600;
   font-family: "Poppins", sans-serif;
   color: var(--vt-c-orange);
 }

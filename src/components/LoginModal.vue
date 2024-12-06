@@ -48,7 +48,7 @@ export default {
 #background{
     height: 100%;
     width: 100%;
-    background-color: rgba(0, 0, 0, .8);
+    background-color: rgba(0, 0, 0, .5);
     position: fixed;
     left: 50%;
     top: 50%;
@@ -62,16 +62,16 @@ h2{
 }
 .backdrop{
     position: absolute;
-    width: 50%;
     max-width: 400px;
-    min-width: 300px;
-    padding: 30px 20px;
-    background: white;
-    border-radius: 20px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 11;
+    width: 50%;
+    min-width: 300px;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 20px;
 }
 form{
     display: flex;
