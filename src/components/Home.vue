@@ -1,5 +1,5 @@
 <template>
-  <Header></Header>
+  <HeaderPage></HeaderPage>
 
   <div class="image-container">
     <h1 class="image-text">
@@ -54,11 +54,11 @@
 import Visitados from "./Visitados.vue";
 import Disponivel from "./Disponivel.vue";
 import Footer from "./Footer.vue";
-import Header from "./Header.vue";
+import HeaderPage from "./HeaderPage.vue";
 import { onMounted, reactive } from 'vue';
 
 export default {
-  components: { Visitados, Disponivel, Footer, Header },
+  components: { Visitados, Disponivel, Footer, HeaderPage },
   data() {
     return {
     valor: "",
@@ -121,7 +121,7 @@ export default {
   transition: 0.5s;
 }*/
 .image-container {
-  padding-top: 100px;
+  padding-top: 0px;
   background-image: url("../assets/categorias/capa-museu2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -131,7 +131,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 500px;
+  height: 400px;
   gap: 20px;
 }
 #categ-esportes {
