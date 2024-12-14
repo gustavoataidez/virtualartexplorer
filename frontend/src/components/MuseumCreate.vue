@@ -146,6 +146,7 @@
 <script>
 import HeaderNovo from "./HeaderPage.vue";
 import FooterNovo from "./Footer.vue";
+import { API_URL } from '@/config'; // Importe a constante da configuração
 
 export default {
   components: { HeaderNovo, FooterNovo },
@@ -179,7 +180,7 @@ export default {
       };
 
       try {
-        const response = await fetch("http://localhost:3000/museums", {
+        const response = await fetch(`${API_URL}/museums`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

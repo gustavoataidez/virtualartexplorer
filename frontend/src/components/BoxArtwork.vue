@@ -34,7 +34,6 @@
     align-items: center;
     padding: 10px;
     padding-top: 180px;
-    justify-content: space-around;
     border-radius: 20px;
     position: relative;
   }

@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '@/config'; // Importe a constante da configuração
 
 export default {
   data() {
@@ -57,7 +58,7 @@ export default {
       return title;
     },
     async fetchData() {
-      const url = `http://localhost:3000/museums`;
+      const url = `${API_URL}/museums`; // Use a URL centralizada
 
       try {
         const response = await axios.get(url);
@@ -72,6 +73,8 @@ export default {
   }
 };
 </script>
+
+
 
 <style scoped>
 /* Estilo opcional para o botão Saber Mais */

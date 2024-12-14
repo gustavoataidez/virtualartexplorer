@@ -18,12 +18,12 @@
       class="my-profile d-flex flex-row p-0 align-items-center"
     >
       <a class="btn1" v-on:click="openProfile">
-        Hi, {{ userEmail }}
+        Hi, {{ firstName }} ({{ userId }})
       </a>
       <a class="btn mx-3 btn-danger" v-on:click="logout">Sair</a>
     </div>
     <div v-if="!sessionActive" class="d-flex flex-row p-0">
-      <a class="btn " v-on:click="openLogin">Entrar</a>
+      <a class="btn" v-on:click="openLogin">Entrar</a>
       <LoginModal
         v-if="loginActive"
         @closeLog="closeLogin"
@@ -38,6 +38,8 @@
     <!-- Modal do Perfil -->
     <ProfileModal
       v-if="profileActive"
+      :userId="userId"
+      :userEmail="userEmail"
       @closeProfile="closeProfile"
       @navigateToCreate="navigateToCreate"
     />
@@ -57,19 +59,25 @@ export default {
       registerActive: false,
       sessionActive: false,
       profileActive: false,
-      userEmail: "", // Armazena o email do usuário logado
+      firstName: "", // Nome do usuário logado
+      userId: null, // ID do usuário logado
+      userEmail: "", // Email do usuário logado
     };
   },
   mounted() {
-    // Verifica se há uma sessão ativa no localStorage
-    const token = localStorage.getItem("authToken");
-    const email = localStorage.getItem("userEmail");
+  // Verifica se há uma sessão ativa no localStorage
+  const token = localStorage.getItem("authToken");
+  const firstName = localStorage.getItem("firstName");
+  const userId = localStorage.getItem("userId");
+  const userEmail = localStorage.getItem("userEmail");
 
-    if (token && email) {
-      this.userEmail = email;
-      this.sessionActive = true;
-    }
-  },
+  if (token && firstName && userId && userEmail) {
+    this.firstName = firstName;
+    this.userId = userId;
+    this.userEmail = userEmail;
+    this.sessionActive = true;
+  }
+},
   methods: {
     openProfile() {
       this.profileActive = true;
@@ -92,19 +100,28 @@ export default {
     closeRegister() {
       this.registerActive = false;
     },
-    setUserSession(email) {
-      this.userEmail = email;
+    setUserSession(user) {
+      this.firstName = user.first_name;
+      this.userId = user.id;
+      this.userEmail = user.email;
       this.sessionActive = true;
 
       // Salvar os dados da sessão no localStorage
-      localStorage.setItem("userEmail", email);
+      localStorage.setItem("authToken", user.token);
+      localStorage.setItem("firstName", user.first_name);
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("userEmail", user.email);
     },
     logout() {
       // Limpa os dados de autenticação no localStorage
       localStorage.removeItem("authToken");
+      localStorage.removeItem("firstName");
+      localStorage.removeItem("userId");
       localStorage.removeItem("userEmail");
 
       // Reseta o estado de sessão
+      this.firstName = "";
+      this.userId = null;
       this.userEmail = "";
       this.sessionActive = false;
 

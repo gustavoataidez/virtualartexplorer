@@ -46,6 +46,7 @@ import Header from "./HeaderPage.vue";
 import Footer from "./Footer.vue";
 import BoxArtwork from "./BoxArtwork.vue";
 import axios from "axios";
+import { API_URL } from '@/config'; // Importe a constante da configuração
 
 export default {
     components: { BoxArtwork, Header, Footer },
@@ -63,7 +64,7 @@ export default {
     methods: {
         async fetchMuseum(id) {
             try {
-                const response = await axios.get(`http://localhost:3000/museums/${id}`);
+                const response = await axios.get(`${API_URL}/museums/${id}`);
                 this.museum = response.data;
             } catch (error) {
                 console.error("Erro ao buscar o museu:", error);
@@ -71,7 +72,7 @@ export default {
         },
         async fetchArtworks(museumId) {
             try {
-                const response = await axios.get(`http://localhost:3000/artworks?museum_id=${museumId}`);
+                const response = await axios.get(`${API_URL}/artworks?museum_id=${museumId}`);
                 this.artworks = response.data;
             } catch (error) {
                 console.error("Erro ao buscar as obras:", error);

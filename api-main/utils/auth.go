@@ -10,7 +10,20 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"golang.org/x/crypto/bcrypt"
 )
+
+// HashPassword com biblioteca bcrypt do Go
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 
 // GenerateToken generates a JWT com o email enviado como parâmetro, e retorna o token gerado e um possível erro
 // Lembre de mudar o tempo ta com 72h andré seu animal
