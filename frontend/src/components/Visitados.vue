@@ -1,8 +1,5 @@
 <template>
   <div class="mt-5 container p-0" style="width: 100%;">
-
-    <span class="subtitle">Conheça os museus mais procurados</span>
-    <h2 class="title-h2">Mais visitados</h2>
     <div class="grid">
       <div
         v-for="(museum, index) in items"
@@ -22,7 +19,6 @@
               <h5 class="card-title">{{ truncateTitle(museum.title) }}</h5>
               <span class="text-location">{{ museum.city }}, {{ museum.state }}</span>
               <p class="text-description">{{ museum.category1 }}, {{ museum.category2 }}</p>
-              <!-- Botão Saber Mais -->
               <button 
                 class="btn1 btn-primary mt-2"
                 @click="goToMuseum(museum.id)"
@@ -39,9 +35,15 @@
 
 <script>
 import axios from 'axios';
-import { API_URL } from '@/config'; // Importe a constante da configuração
+import { API_URL } from '@/config';
 
 export default {
+  props: {
+    urlAPI: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       items: [] // Lista de museus
@@ -58,22 +60,21 @@ export default {
       return title;
     },
     async fetchData() {
-      const url = `${API_URL}/museums`; // Use a URL centralizada
+      const url = `${API_URL}/${this.urlAPI}`;
 
       try {
         const response = await axios.get(url);
-        this.items = response.data; // Obtém todos os museus
+        this.items = response.data; // Obtém todos os museus da rota informada
       } catch (e) {
         console.error("Error fetching data:", e);
       }
     },
     goToMuseum(id) {
-      this.$router.push(`/museum/${id}`); // Navega para a página do museu pelo ID
+      this.$router.push(`/museum/${id}`); 
     }
   }
 };
 </script>
-
 
 
 <style scoped>

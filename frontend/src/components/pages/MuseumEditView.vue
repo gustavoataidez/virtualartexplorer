@@ -113,8 +113,8 @@
 </template>
 
 <script>
-import HeaderNovo from "./HeaderPage.vue";
-import FooterNovo from "./Footer.vue";
+import HeaderNovo from "../HeaderPage.vue";
+import FooterNovo from "../Footer.vue";
 
 export default {
   components: { HeaderNovo, FooterNovo },

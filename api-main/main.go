@@ -37,6 +37,8 @@ func main() {
 	r.GET("api/v1/artworks/author/:author", controllers.GetArtworksByAuthor)
 	r.GET("api/v1/artworks/name/:name", controllers.GetArtworksByName)
 	r.GET("api/v1/artworks/year/:year", controllers.GetArtworksByYear)
+	r.GET("/api/v1/museums", controllers.GetAllMuseums)
+	r.GET("/api/v1/museums/category", controllers.GetMuseumsByCategory)
 
 	auth := r.Group("/api/v1")
 	auth.Use(utils.ValidateTokenMiddleware)

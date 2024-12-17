@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import Header from "./HeaderPage.vue";
-import Footer from "./Footer.vue";
-import BoxArtwork from "./BoxArtwork.vue";
+import Header from "../HeaderPage.vue";
+import Footer from "../Footer.vue";
+import BoxArtwork from "../BoxArtwork.vue";
 import axios from "axios";
 import { API_URL } from '@/config'; // Importe a constante da configuração
 

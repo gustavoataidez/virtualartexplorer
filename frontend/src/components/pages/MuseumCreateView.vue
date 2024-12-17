@@ -144,8 +144,8 @@
 </template>
 
 <script>
-import HeaderNovo from "./HeaderPage.vue";
-import FooterNovo from "./Footer.vue";
+import HeaderNovo from "../HeaderPage.vue";
+import FooterNovo from "../Footer.vue";
 import { API_URL } from '@/config'; // Importe a constante da configuração
 
 export default {

@@ -43,18 +43,19 @@
         <h5 class="categ-title">Cultura</h5>
       </div>
     </div>
-
-    <Visitados :urlAPI=urlLink></Visitados>
+    <div class="mt-5 container p-0" style="width: 100%;">
+    <span class="subtitle">Conheça os museus mais procurados</span>
+    <h2 class="title-h2 mb-0">Mais visitados</h2></div>
+    <Visitados :urlAPI="'museums'"></Visitados>
   </div>
-  <!--<Disponivel />-->
 
   <Footer></Footer>
 </template>
 <script>
-import Visitados from "./Visitados.vue";
-import Disponivel from "./Disponivel.vue";
-import Footer from "./Footer.vue";
-import HeaderPage from "./HeaderPage.vue";
+import Visitados from "../Visitados.vue";
+import Disponivel from "../Disponivel.vue";
+import Footer from "../Footer.vue";
+import HeaderPage from "../HeaderPage.vue";
 import { onMounted, reactive } from 'vue';
 
 export default {
@@ -63,10 +64,10 @@ export default {
     return {
     valor: "",
     images: [
-        "../src/assets/categorias/categ-esportes.jpg",
-        "../src/assets/categorias/categ-pessoas.jpg",
-        "../src/assets/categorias/categ-escravidao.jpg",
-        "../src/assets/categorias/categ-cultura.jpeg",
+        "../../src/assets/categorias/categ-esportes.jpg",
+        "../../src/assets/categorias/categ-pessoas.jpg",
+        "../../src/assets/categorias/categ-escravidao.jpg",
+        "../../src/assets/categorias/categ-cultura.jpeg",
       ],
     urlLink: "filter.php?i=Gin",//"random.php",
 
@@ -122,7 +123,7 @@ export default {
 }*/
 .image-container {
   padding-top: 0px;
-  background-image: url("../assets/categorias/capa-museu2.jpg");
+  background-image: url("../../assets/categorias/capa-museu2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -135,16 +136,16 @@ export default {
   gap: 20px;
 }
 #categ-esportes {
-  background-image: url("../assets/categorias/categ-esportes.jpg");
+  background-image: url("../../assets/categorias/categ-esportes.jpg");
 }
 #categ-pessoas {
-  background-image: url("../assets/categorias/categ-pessoas.jpg");
+  background-image: url("../../assets/categorias/categ-pessoas.jpg");
 }
 #categ-escravidao {
-  background-image: url("../assets/categorias/categ-escravidao.jpg");
+  background-image: url("../../assets/categorias/categ-escravidao.jpg");
 }
 #categ-cultura {
-  background-image: url("../assets/categorias/categ-cultura2.jpg");
+  background-image: url("../../assets/categorias/categ-cultura2.jpg");
 }
 
 .card-tag {

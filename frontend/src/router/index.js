@@ -1,10 +1,11 @@
 import { createWebHistory, createRouter } from 'vue-router';
 
-import Home from '@/components/Home.vue';
+import Home from '@/components/pages/Home.vue';
+import MuseumsListView from '@/components/pages/MuseumsListView.vue';
 import SearchPage from '@/components/SearchPage.vue';
-import MuseumPage from '@/components/MuseumPage.vue';
-import MuseumEdit from '@/components/MuseumEdit.vue';
-import MuseumCreate from '@/components/MuseumCreate.vue';
+import MuseumPage from '@/components/pages/MuseumView.vue';
+import MuseumEdit from '@/components/pages/MuseumEditView.vue';
+import MuseumCreate from '@/components/pages/MuseumCreateView.vue';
 import ArtworkPage from '@/components/ArtworkPage.vue';
 import LoginTest from '@/components/LoginTest.vue';
 
@@ -13,6 +14,7 @@ export const router = createRouter({
   routes: [
     { path: '/', component: Home },
     { path: '/search', component: SearchPage },
+    { path: '/museum', component: MuseumsListView },
     { 
       path: '/museum/:id', 
       component: MuseumPage, 
