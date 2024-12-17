@@ -4,7 +4,7 @@
   >
     <div class="menu-items">
       <ul class="d-flex flex-row p-0">
-        <li><router-link to="/museum">Museus</router-link></li>
+        <li><router-link to="/museums">Museus</router-link></li>
         <li><router-link class="px-4" to="/artwork">Obras</router-link></li>
       </ul>
     </div>

@@ -35,10 +35,8 @@
   ],
   "museums": [
     {
-      "id": 1,
       "title": "Museu de Arte Moderna",
       "description": "Um museu dedicado à arte moderna.",
-      "image": "https://www.mamrio.com.br/imagenes-artigos/mam-rio.jpeg",
       "category1": "Arte",
       "category2": "Moderna",
       "link": "http://museudearte.com",
@@ -48,6 +46,9 @@
       "state": "SP",
       "information": "Aberto de terça a domingo, das 10h às 18h.",
       "manager_id": 1,
+      "capa": null,
+      "id": 1,
+      "image": "https://www.mamrio.com.br/imagenes-artigos/mam-rio.jpeg",
       "active": true
     },
     {
@@ -129,6 +130,38 @@
       "information": "Inclui exposições sobre danças, culinária e festivais regionais.",
       "manager_id": 6,
       "active": true
+    },
+    {
+      "title": "oi",
+      "description": "oi",
+      "category1": "",
+      "category2": "",
+      "link": "",
+      "address": "",
+      "cep": "",
+      "city": "",
+      "state": "PE",
+      "information": "",
+      "manager_id": null,
+      "capa": null,
+      "image": "",
+      "id": 7
+    },
+    {
+      "title": "oi",
+      "description": "oi",
+      "category1": "",
+      "category2": "",
+      "link": "",
+      "address": "",
+      "cep": "",
+      "city": "",
+      "state": "PE",
+      "information": "",
+      "manager_id": null,
+      "capa": null,
+      "image": "",
+      "id": 8
     }
   ],
   "artworks": [
@@ -212,6 +245,42 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/8/87/Jules_Rimet_Trophy.jpg",
       "author": "FIFA",
       "active": true
+    },
+    {
+      "museum_id": 9,
+      "name": "oi",
+      "description": "oi",
+      "author": "oi",
+      "image": "oi",
+      "active": true,
+      "id": 10
+    },
+    {
+      "museum_id": 9,
+      "name": "oi",
+      "description": "oio",
+      "author": "oi",
+      "image": "oi",
+      "active": true,
+      "id": 11
+    },
+    {
+      "museum_id": 7,
+      "name": "111",
+      "description": "222",
+      "author": "333",
+      "image": "444",
+      "active": true,
+      "id": 12
+    },
+    {
+      "museum_id": "1",
+      "name": "oi",
+      "description": "oi",
+      "author": "",
+      "image": "",
+      "active": true,
+      "id": 13
     }
   ]
 }

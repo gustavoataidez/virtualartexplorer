@@ -1,177 +1,456 @@
 <template>
-    <HeaderNovo></HeaderNovo>
-    
-<div class="museu-page">
+  <HeaderNovo></HeaderNovo>
+  <div class="museu-page">
     <div class="sec-resume">
+      <div>
+        <p class="form__label">Capa</p>
+        <label class="custum-file-upload" for="file">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"></svg>
+          </div>
+          <div class="text">
+            <span>Upload da foto do museu</span>
+          </div>
+        </label>
+        <input
+          class="form-control"
+          style="background:transparent;border: dashed 0px #cacaca;"
+          type="file"
+          id="file"
+          @change="onFileChange"
+        />
+      </div>
+      <div class="resume-desc">
+        <div class="form__group field">
+          <label for="title" class="form__label">Título</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.title"
+            placeholder="Ex. Museu das Artes"
+            required
+          />
+          <label for="description" class="form__label">Descrição</label>
+          <textarea
+            class="form__field texto"
+            v-model="museum.description"
+            placeholder="Descreva sobre o museu"
+            name="description"
+            required
+          ></textarea>
+          <label for="category1" class="form__label">Categoria 1</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.category1"
+            placeholder="Ex. Cultura"
+          />
+          <label for="category2" class="form__label">Categoria 2</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.category2"
+            placeholder="Ex. Tradições"
+          />
+          <label for="link" class="form__label">Link</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.link"
+            placeholder="Ex. http://museucultura.com"
+          />
+          <label for="address" class="form__label">Endereço</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.address"
+            placeholder="Ex. Avenida das Tradições, 303"
+          />
+          <label for="cep" class="form__label">CEP</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.cep"
+            placeholder="Ex. 88900-111"
+          />
+          <label for="city" class="form__label">Cidade</label>
+          <input
+            type="input"
+            class="form__field"
+            v-model="museum.city"
+            placeholder="Ex. Recife"
+            required
+          />
+          <label for="state" class="form__label">Estado</label>
+          <select
+            class="form-select"
+            style="background-color: #e2e2e2;"
+            v-model="museum.state"
+            name="state"
+          >
+            <option value="AC">Acre</option>
+            <option value="AL">Alagoas</option>
+            <option value="AP">Amapá</option>
+            <option value="AM">Amazonas</option>
+            <option value="BA">Bahia</option>
+            <option value="CE">Ceará</option>
+            <option value="DF">Distrito Federal</option>
+            <option value="ES">Espírito Santo</option>
+            <option value="GO">Goiás</option>
+            <option value="MA">Maranhão</option>
+            <option value="MT">Mato Grosso</option>
+            <option value="MS">Mato Grosso do Sul</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="PA">Pará</option>
+            <option value="PB">Paraíba</option>
+            <option value="PR">Paraná</option>
+            <option value="PE">Pernambuco</option>
+            <option value="PI">Piauí</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="RN">Rio Grande do Norte</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <option value="RO">Rondônia</option>
+            <option value="RR">Roraima</option>
+            <option value="SC">Santa Catarina</option>
+            <option value="SP">São Paulo</option>
+            <option value="SE">Sergipe</option>
+            <option value="TO">Tocantins</option>
+          </select>
+          <label for="information" class="form__label">Mais Informações</label>
+          <textarea
+            class="form__field texto"
+            v-model="museum.information"
+            placeholder="Ex. Inclui exposições sobre danças, culinária e festivais regionais."
+          ></textarea>
 
-        <div ><p class="form__label">Capa</p>
-            <label class="custum-file-upload" for="file">
-<div class="icon">
-<svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> </g></svg>
-</div>
-<div class="text">
-   <span>Upload da foto do museu</span>
-   </div>
-</label><input class="form-control" style="background:transparent;border: dashed 0px #cacaca;" type="file" id="file">
-</div>
-        <div class="resume-desc">
-    <div class="form__group field">
-    <label for="name" class="form__label">Titulo</label>
-    <input type="input" class="form__field" placeholder="Ex. Museu das Artes" required="">
-    <label for="obs" class="form__label">Descrição</label>
-    <textarea class="form__field texto" placeholder="Descreva sobre o museu" name="inf"></textarea>
-    <label for="obs" class="form__label">Estado</label>
-    <select class="form-select" style="background-color: #e2e2e2;" id="estado" name="estado">
-    <option value="AC">Acre</option>
-    <option value="AL" selected>Alagoas</option>
-    <option value="AP">Amapá</option>
-    <option value="AM">Amazonas</option>
-    <option value="BA">Bahia</option>
-    <option value="CE">Ceará</option>
-    <option value="DF">Distrito Federal</option>
-    <option value="ES">Espírito Santo</option>
-    <option value="GO">Goiás</option>
-    <option value="MA">Maranhão</option>
-    <option value="MT">Mato Grosso</option>
-    <option value="MS">Mato Grosso do Sul</option>
-    <option value="MG">Minas Gerais</option>
-    <option value="PA">Pará</option>
-    <option value="PB">Paraíba</option>
-    <option value="PR">Paraná</option>
-    <option value="PE">Pernambuco</option>
-    <option value="PI">Piauí</option>
-    <option value="RJ">Rio de Janeiro</option>
-    <option value="RN">Rio Grande do Norte</option>
-    <option value="RS">Rio Grande do Sul</option>
-    <option value="RO">Rondônia</option>
-    <option value="RR">Roraima</option>
-    <option value="SC">Santa Catarina</option>
-    <option value="SP">São Paulo</option>
-    <option value="SE">Sergipe</option>
-    <option value="TO">Tocantins</option>
-    <option value="EX">Estrangeiro</option>
-    </select>
-    <label for="name" class="form__label">Cidade</label>
-    <input type="input" class="form__field" placeholder="Ex. Maceió" required="">
-    <label for="inf" class="form__label">Mais informações
-    </label>
-    <textarea class="form__field texto" placeholder="Coloque aqui informações como endereço, contato, redes sociais..." name="obs"></textarea>
-    <button class="btn btn-success">Salvar</button>
-</div>
-</div>
-</div>
-
-    <div class="sec-obras">
-      <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
-      <div class="grade-obras">
-        <button class="btn btn-primary" @click="showForm = true">Adicionar Obra</button>
+          <label for="manager_id" class="form__label">ID do Gerente</label>
+          <input
+            type="number"
+            class="form__field"
+            v-model="museum.manager_id"
+            placeholder="Ex. 6"
+            disabled
+          />
+          
+          <button class="btn btn-success" @click="updateMuseum">Salvar Museu</button>
+        </div>
+        <button class="btn btn-danger mt-2" @click="deactivateMuseum">Excluir</button>
       </div>
     </div>
 
-   
+    <!-- Seção de Adicionar Obras (já que o museu já está criado) -->
+    <div class="add-obras-section" v-if="museumId">
+      <h3>Adicionar Obras</h3>
+      <button class="btn btn-primary" @click="openObraModal">Adicionar Obra</button>
+
+      <!-- Listagem das obras adicionadas -->
+      <ul class="obra-list" v-if="works.length > 0">
+        <li v-for="(obra, index) in works" :key="obra.id">
+          <strong>{{ obra.name }}</strong> - {{ obra.description }} - {{ obra.author || 'Autor Desconhecido' }} - {{ obra.image }}
+          <a href="#" @click.prevent="deleteObra(obra.id, index)" style="color:red; margin-left:10px;">Excluir</a>
+        </li>
+      </ul>
+
+      <!-- Botão para finalizar cadastro (direciona para a página home com alerta) -->
+      <div class="finish-section">
+        <button class="btn btn-success" @click="finishRegistration">Concluir</button>
+      </div>
+    </div>
+
+    <!-- Modal para adicionar obra -->
+    <div v-if="showObraModal" class="modal-overlay" @click="closeObraModal">
+      <div class="modal-content" @click.stop>
+        <h4>Adicionar Obra</h4>
+        <label>Nome da Obra</label>
+        <input type="text" v-model="newObra.name" placeholder="Ex. O Grito" required/>
+
+        <label>Descrição</label>
+        <textarea v-model="newObra.description" placeholder="Descrição da obra" required></textarea>
+
+        <label>Autor</label>
+        <input type="text" v-model="newObra.author" placeholder="Ex. Edvard Munch"/>
+
+        <label>Link da Imagem</label>
+        <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
+
+        <button class="btn btn-success" @click="createObra">Salvar Obra</button>
+        <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
+      </div>
+    </div>
 
   </div>
-   <!-- Formulário Modal -->
-   <div v-if="showForm" class="modal-overlay">
-      <div class="modal-form">
-        <button class="close-button" @click="showForm = false">×</button>
-        <h3>Adicionar Nova Obra</h3>
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <label for="titulo">Título</label>
-            <input
-              type="text"
-              id="titulo"
-              v-model="form.titulo"
-              placeholder="Título da Obra"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="descricao">Descrição</label>
-            <textarea
-              id="descricao"
-              v-model="form.descricao"
-              placeholder="Descrição da Obra"
-              required
-            ></textarea>
-          </div>
-          <div class="form-group">
-            <label for="capa">Capa</label>
-            <input
-              type="file"
-              id="capa"
-              @change="onFileChange"
-              accept="image/*"
-              required
-            />
-          </div>
-          <button type="submit" class="btn btn-success">Salvar</button>
-        </form>
-    </div></div>
-    <FooterNovo></FooterNovo>
+  <FooterNovo></FooterNovo>
 </template>
 
 <script>
 import HeaderNovo from "../HeaderPage.vue";
 import FooterNovo from "../Footer.vue";
+import { API_URL } from '@/config';
 
 export default {
   components: { HeaderNovo, FooterNovo },
   data() {
     return {
-      showForm: false,
-      form: {
-        titulo: "",
-        descricao: "",
+      museum: {
+        title: "",
+        description: "",
+        category1: "",
+        category2: "",
+        link: "",
+        address: "",
+        cep: "",
+        city: "",
+        state: "PE",
+        information: "",
+        manager_id: null,
         capa: null,
+        image: ""
       },
+      museumId: null,
+      showObraModal: false,
+      newObra: {
+        name: "",
+        description: "",
+        author: "",
+        image: ""
+      },
+      works: []
     };
+  },
+  async created() {
+    this.museumId = this.$route.params.id;
+    await this.fetchMuseum();
+    await this.fetchArtworks();
   },
   methods: {
     onFileChange(event) {
       const file = event.target.files[0];
-      this.form.capa = file;
+      this.museum.capa = file;
     },
-    async submitForm() {
-      if (!this.form.titulo || !this.form.descricao || !this.form.capa) {
-        alert("Todos os campos são obrigatórios!");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("titulo", this.form.titulo);
-      formData.append("descricao", this.form.descricao);
-      formData.append("capa", this.form.capa);
-
+    async deactivateMuseum() {
       try {
-        const response = await fetch("https://sua-api.com/cadastrar-obra", {
-          method: "POST",
-          body: formData,
+        const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: "",
+            description: "",
+            image: "",
+            category1: "",
+            category2: "",
+            link: "",
+            address: "",
+            cep: "",
+            city: "",
+            state: "",
+            information: "",
+            manager_id: null,
+            active: false
+          }),
         });
 
         if (response.ok) {
-          alert("Obra cadastrada com sucesso!");
-          this.showForm = false;
-          this.resetForm();
+          alert("Museu desativado com sucesso!");
+          this.$router.push("/museums");
+        } else {
+          alert("Erro ao desativar o museu.");
+        }
+      } catch (error) {
+        console.error("Erro ao desativar:", error);
+        alert("Erro ao desativar o museu.");
+      }
+    },
+    async fetchMuseum() {
+      try {
+        const response = await fetch(`${API_URL}/museums/${this.museumId}`);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar dados do museu");
+        }
+        const data = await response.json();
+        this.museum = {
+          ...this.museum,
+          ...data
+        };
+      } catch (error) {
+        console.error("Erro ao carregar dados do museu:", error);
+      }
+    },
+    async fetchArtworks() {
+      try {
+        const response = await fetch(`${API_URL}/artworks?museum_id=${this.museumId}`);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar obras de arte");
+        }
+        this.works = await response.json();
+      } catch (error) {
+        console.error("Erro ao carregar obras:", error);
+      }
+    },
+    async updateMuseum() {
+      if (!this.museum.title || !this.museum.description) {
+        alert("Título e Descrição são obrigatórios.");
+        return;
+      }
+
+      const museumData = {
+        ...this.museum,
+        image: this.museum.capa ? URL.createObjectURL(this.museum.capa) : this.museum.image,
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(museumData),
+        });
+
+        if (response.ok) {
+          alert("Museu atualizado com sucesso!");
+        } else {
+          alert("Erro ao atualizar o museu.");
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar:", error);
+        alert("Erro ao atualizar o museu.");
+      }
+    },
+    openObraModal() {
+      this.showObraModal = true;
+    },
+    closeObraModal() {
+      this.showObraModal = false;
+      this.newObra = {
+        name: "",
+        description: "",
+        author: "",
+        image: ""
+      };
+    },
+    async createObra() {
+      if (!this.newObra.name || !this.newObra.description) {
+        alert("Nome da Obra e Descrição são obrigatórios.");
+        return;
+      }
+
+      const obraData = {
+        museum_id: this.museumId,
+        name: this.newObra.name,
+        description: this.newObra.description,
+        author: this.newObra.author,
+        image: this.newObra.image || "",
+        active: true
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/artworks`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(obraData),
+        });
+
+        if (response.ok) {
+          const createdObra = await response.json();
+          this.works.push(createdObra);
+          this.closeObraModal();
         } else {
           alert("Erro ao cadastrar a obra.");
         }
       } catch (error) {
-        console.error("Erro ao cadastrar:", error);
+        console.error("Erro ao cadastrar obra:", error);
         alert("Erro ao cadastrar a obra.");
       }
     },
-    resetForm() {
-      this.form.titulo = "";
-      this.form.descricao = "";
-      this.form.capa = null;
+    async deleteObra(id, index) {
+      try {
+        const response = await fetch(`${API_URL}/artworks/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          this.works.splice(index, 1);
+        } else {
+          alert("Erro ao excluir a obra.");
+        }
+      } catch (error) {
+        console.error("Erro ao excluir a obra:", error);
+        alert("Erro ao excluir a obra.");
+      }
+    },
+    finishRegistration() {
+      alert("Museu atualizado com sucesso!");
+      this.$router.push("/");
     },
   },
 };
 </script>
 
 <style scoped>
+.museu-page {
+  padding: 20px;
+}
+.form__label {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+.form__field {
+  margin-bottom: 10px;
+}
+.texto {
+  height: 100px;
+}
+.save-museum-section, .finish-section {
+  margin-top: 20px;
+}
+
+.add-obras-section {
+  margin-top: 30px;
+}
+
+.obra-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+.obra-list li {
+  margin-bottom: 10px;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top:0;left:0;right:0;bottom:0;
+  background-color: rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+.modal-content {
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+  max-width:400px;
+  width:100%;
+}
+.modal-content h4 {
+  margin-bottom:15px;
+}
+.modal-content label {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+.modal-content input, .modal-content textarea {
+  width:100%;
+  margin-bottom:10px;
+  padding:5px;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
 /* Estilização do modal */
 .modal-overlay {
     height: 100%;

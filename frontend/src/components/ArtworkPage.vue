@@ -1,64 +1,46 @@
 <template>
   <div class="background">
     <div class="card">
-      <div
-        class="bg-image hover-overlay"
-        data-mdb-ripple-init
-        data-mdb-ripple-color="light"
-      >
-        <img src="../assets/obras/obra-1.jpg" class="img-fluid" />
-        <a href="#!">
-          <!--<div class="mask" style="background-color: rgba(0, 251, 251, 0.95);"></div>-->
-        </a>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Nome Obra</h5>
-        <p class="">Autor Desconhecido</p>
-        <p class="">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <router-link to="/" class="btn btn-danger">Fechar </router-link>
+      <!-- Conteúdo da sua card -->
+
+      <!-- Modal de detalhes da obra -->
+      <div v-if="showModal" class="modal">
+        <div class="modal-content">
+          <h5>{{ selectedArtwork.name }}</h5>
+          <p>{{ selectedArtwork.author || 'Autor Desconhecido' }}</p>
+          <p>{{ selectedArtwork.description }}</p>
+          <button @click="closeModal" class="btn btn-danger">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import BoxArtwork from './BoxArtwork.vue';
+
 export default {
   name: "NewArtwork",
+  components: { BoxArtwork },
   data() {
     return {
-      boxActive: true,
-      showPopup: false,
+      showModal: false,
+      selectedArtwork: null,
     };
   },
   methods: {
-    registerBoxArtwork() {
-      // Lógica para realizar o login
+    openModal(artwork) {
+      this.selectedArtwork = artwork;
+      this.showModal = true;
     },
-    submitForm() {
-      // Simular envio do formulário
-      // Aqui você poderia enviar os dados para um servidor usando axios ou fetch
-
-      // Mostrar o pop-up
-      this.showPopup = true;
-
-      // Esconder o pop-up após 2 segundos
-      setTimeout(() => {
-        this.showPopup = false;
-      }, 2000);
-    },
-    openNewBox: function () {
-      this.boxActive = true;
-    },
-    closeNewBox: function () {
-      this.boxActive = false;
-      this.$emit("closeBox");
+    closeModal() {
+      this.showModal = false;
+      this.selectedArtwork = null;
     },
   },
 };
 </script>
+
 
 <style scoped>
 .card {

@@ -14,13 +14,17 @@ export const router = createRouter({
   routes: [
     { path: '/', component: Home },
     { path: '/search', component: SearchPage },
-    { path: '/museum', component: MuseumsListView },
+    { path: '/museums', component: MuseumsListView },
     { 
       path: '/museum/:id', 
       component: MuseumPage, 
       props: true // Passa o ID como prop para o componente
     },
-    { path: '/museum/edit', component: MuseumEdit },
+    { 
+      path: '/museum/edit/:id', 
+      component: MuseumEdit, 
+      props: true // Passa o ID como prop para o componente
+    },
     { path: '/museum/create', component: MuseumCreate },
     { path: '/artwork', component: ArtworkPage }
   ]

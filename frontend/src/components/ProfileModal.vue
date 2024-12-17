@@ -8,10 +8,10 @@
       </button>
 
       <div v-if="museums.length > 0" class="museums-list">
-        <h3>Todos os Museus</h3>
+        <h3>Museus</h3>
         <div v-for="museum in museums" :key="museum.id">
           <button class="btn-museum" @click="openMuseum(museum.id)">
-            {{ museum.manager_id }}
+            {{ museum.title }}
           </button>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default {
     },
     openMuseum(museumId) {
       // Redireciona para a página do museu
-      this.$router.push(`/museum/${museumId}`);
+      this.$router.push(`/museum/edit/${museumId}`);
     },
   },
 };

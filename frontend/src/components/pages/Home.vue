@@ -5,61 +5,46 @@
     <h1 class="image-text">
       Tenha uma incrível <br />
       <span>experiência</span> aqui!
-    </h1><!--
-    <div class="input-div">
-       <input
-        type="text"
-        class="input-overlay"
-        placeholder="Procure por Museu, Cidade, Estado...." :value="valor"
-      />
-      <router-link to="/search">
-        <button class="button-search">
-          <font-awesome-icon icon="search" class="search-icon" size="lg" />
-        </button>
-      </router-link>
-    </div>-->
+    </h1>
   </div>
 
   <div class="page container-sm px-5 my-5">
     <span class="subtitle">Mais procuradas</span>
     <h2 class="title-h2 mb-4">Categorias</h2>
-    <!--
-    <div class="row justify-content-md-center">
-      <div v-for="(image, index) in images" :key="index" class="col-md-3 category">
-        <img :src="image" :alt="'Imagem ' + (index + 1)" class="image-card" />
-      </div>
-    </div>-->
+
     <div class="d-flex flex-row justify-content-between flex-wrap gap-1">
-      <div id="categ-esportes" @click="loadContent('filter.php?i=Gin')" class="category">
+      <div id="categ-esportes" class="category" @click="goToCategory('Esportes')">
         <h5 class="categ-title">Esportes</h5>
       </div>
-      <div id="categ-pessoas" @click="loadContent('filter.php?i=Vodka')" class="category">
+      <div id="categ-pessoas" class="category" @click="goToCategory('Pessoas')">
         <h5 class="categ-title">Pessoas</h5>
       </div>
-      <div id="categ-escravidao" @click="loadContent('filter.php?i=Tequila')" class="category">
-        <h5 class="categ-title">EScravidão</h5>
+      <div id="categ-escravidao" class="category" @click="goToCategory('Escravidão')">
+        <h5 class="categ-title">Escravidão</h5>
       </div>
-      <div id="categ-cultura" @click="loadContent('filter.php?i=Tea')" class="category">
+      <div id="categ-cultura" class="category" @click="goToCategory('Cultura')">
         <h5 class="categ-title">Cultura</h5>
       </div>
     </div>
+
     <div class="mt-5 container p-0" style="width: 100%;">
-    <span class="subtitle">Conheça os museus mais procurados</span>
-    <h2 class="title-h2 mb-0">Mais visitados</h2></div>
-    <Visitados :urlAPI="'museums'"></Visitados>
+      <span class="subtitle">Conheça os museus mais procurados</span>
+      <h2 class="title-h2 mb-0">Mais visitados</h2>
+    </div>
+
+    <Visitados urlAPI="museums"></Visitados>
   </div>
 
   <Footer></Footer>
 </template>
+
 <script>
 import Visitados from "../Visitados.vue";
-import Disponivel from "../Disponivel.vue";
 import Footer from "../Footer.vue";
 import HeaderPage from "../HeaderPage.vue";
-import { onMounted, reactive } from 'vue';
 
 export default {
-  components: { Visitados, Disponivel, Footer, HeaderPage },
+  components: { Visitados, Footer, HeaderPage },
   data() {
     return {
     valor: "",
@@ -69,32 +54,15 @@ export default {
         "../../src/assets/categorias/categ-escravidao.jpg",
         "../../src/assets/categorias/categ-cultura.jpeg",
       ],
-    urlLink: "filter.php?i=Gin",//"random.php",
 
     };
   },
-  created() {
-    console.log("mounted");
-    this.loadContent(this.urlLink);
-  },
   methods: {
-    SearchEsportes() {
-      this.urlLink = "filter.php?i=Gin";
-    },
-    SearchPessoas() {
-      this.urlLink = "filter.php?c=Pessoas";
-    },
-    SearchEscravidao() {
-      this.urlLink = "filter.php?c=Escravidao";
-    },
-    SearchCultura() {
-      this.urlLink = "filter.php?c=Cultura";
-    },
-    loadContent(url) {
-      // Atualiza o urlLink com a nova URL e carrega o conteúdo
-      this.urlLink = url;
+    goToCategory(category) {
+      this.$router.push(`/museums/${category}`);
     }
-  }
+  },
+  
 };
 </script>
 
@@ -115,12 +83,12 @@ export default {
   justify-content: center;
   width: 23%;
   min-width: 200px;
-}/*
+}
 .category:hover {
   cursor: pointer;
   transform: scale(1.02);
   transition: 0.5s;
-}*/
+}
 .image-container {
   padding-top: 0px;
   background-image: url("../../assets/categorias/capa-museu2.jpg");
