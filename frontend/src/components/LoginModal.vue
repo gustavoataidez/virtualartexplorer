@@ -1,7 +1,14 @@
 <template>
   <div id="background" v-if="loginActive">
     <div class="backdrop">
-      <h2><a v-on:click="closeLogin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px"><path d="M512 256A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM215 127c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-71 71L392 232c13.3 0 24 10.7 24 24s-10.7 24-24 24l-214.1 0 71 71c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L103 273c-9.4-9.4-9.4-24.6 0-33.9L215 127z"/></svg></a> Login</h2>
+      <h2>
+        <a v-on:click="closeLogin">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px">
+            <path d="M512 256A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM215 127c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-71 71L392 232c13.3 0 24 10.7 24 24s-10.7 24-24 24l-214.1 0 71 71c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L103 273c-9.4-9.4-9.4-24.6 0-33.9L215 127z"/>
+          </svg>
+        </a>
+        Login
+      </h2>
       <form @submit.prevent="realizarLogin">
         <label for="email">E-mail</label>
         <input
@@ -33,43 +40,28 @@ export default {
   data() {
     return {
       loginActive: true,
-      email: "user@example.com", // Email do usuário (preenchido para teste)
-      password: "123456", // Senha do usuário (preenchida para teste)
+      email: "", // Deixe vazio para entrada do usuário
+      password: "", // Deixe vazio para entrada do usuário
     };
   },
   methods: {
     async realizarLogin() {
-  try {
-    const response = await axios.post("http://localhost:5500/auth/login", {
-      email: this.email,
-      password: this.password,
-    });
+      try {
+        const response = await axios.post("http://localhost:3000/api/v1/login", {
+          email: this.email,
+          password: this.password,
+        });
 
-    if (response.data && response.data.token) {
-      // Salva os dados no localStorage
-      localStorage.setItem("authToken", response.data.token);
-      localStorage.setItem("firstName", response.data.first_name);
-      localStorage.setItem("userId", response.data.id);
-      localStorage.setItem("userEmail", this.email);
-
-      // Emite o evento com os dados do usuário
-      this.$emit("userLoggedIn", {
-        first_name: response.data.first_name,
-        id: response.data.id,
-        token: response.data.token,
-        email: this.email,
-      });
-
-      // Fecha o modal
-      this.closeLogin();
-    } else {
-      alert("Login falhou. Tente novamente.");
-    }
-  } catch (error) {
-    console.error("Erro ao realizar login:", error);
-    alert("Credenciais inválidas.");
-  }
-},
+        if (response.data && response.data.token) {
+          alert("Login realizado com sucesso!");
+        } else {
+          alert("Login falhou. Tente novamente.");
+        }
+      } catch (error) {
+        console.error("Erro ao realizar login:", error);
+        alert("Credenciais inválidas ou erro no servidor.");
+      }
+    },
     closeLogin() {
       this.loginActive = false;
       this.$emit("closeLog");

@@ -52,5 +52,5 @@ func main() {
 	auth.PUT("/artworks/:id/disable", controllers.DisableArtwork)
 	auth.PUT("/artworks/:id", controllers.UpdateArtwork)
 
-	r.Run(":8080")
+	r.Run(":3000")
 }
