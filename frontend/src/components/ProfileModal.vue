@@ -2,7 +2,7 @@
   <div id="background">
     <div class="backdrop">
       <h2>Meu Perfil</h2>
-      <p>Bem-vindo(a), {{ userId }}</p>
+      <p>Bem-vindo(a), {{ userEmail }}</p>
       <button class="btn-action" @click="$emit('navigateToCreate')">
         Criar Museu
       </button>

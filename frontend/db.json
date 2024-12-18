@@ -37,27 +37,25 @@
     {
       "title": "Museu de Arte Moderna",
       "description": "Um museu dedicado à arte moderna.",
-      "category1": "Arte",
-      "category2": "Moderna",
+      "category1": "Tradições",
+      "category2": "Cultura",
       "link": "http://museudearte.com",
       "address": "Rua das Flores, 123",
       "cep": "12345-678",
-      "city": "São Paulo",
+      "city": "Agudos",
       "state": "SP",
       "information": "Aberto de terça a domingo, das 10h às 18h.",
       "manager_id": 1,
       "capa": null,
-      "id": 1,
       "image": "https://www.mamrio.com.br/imagenes-artigos/mam-rio.jpeg",
+      "id": 1,
       "active": true
     },
     {
-      "id": 2,
       "title": "Museu de História Natural",
       "description": "Explorando a história do mundo natural.",
-      "image": "https://artequeacontece.com.br/wp-content/uploads/2023/02/53271175-40373462.jpeg",
-      "category1": "Ciência",
-      "category2": "História Natural",
+      "category1": "História",
+      "category2": "Artes",
       "link": "http://historia-natural.com",
       "address": "Avenida Central, 456",
       "cep": "98765-432",
@@ -65,6 +63,9 @@
       "state": "RJ",
       "information": "Visitas guiadas disponíveis.",
       "manager_id": 1,
+      "capa": null,
+      "image": "https://artequeacontece.com.br/wp-content/uploads/2023/02/53271175-40373462.jpeg",
+      "id": 2,
       "active": true
     },
     {
@@ -240,15 +241,6 @@
       "image": "444",
       "active": true,
       "id": 12
-    },
-    {
-      "museum_id": "1",
-      "name": "oi",
-      "description": "oi",
-      "author": "",
-      "image": "",
-      "active": true,
-      "id": 13
     }
   ]
 }

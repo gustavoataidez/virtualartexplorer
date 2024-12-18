@@ -30,6 +30,7 @@
             placeholder="Ex. Museu das Artes"
             required
           />
+
           <label for="description" class="form__label">Descrição</label>
           <textarea
             class="form__field texto"
@@ -38,20 +39,25 @@
             name="description"
             required
           ></textarea>
-          <label for="category1" class="form__label">Categoria 1</label>
-          <input
-            type="input"
-            class="form__field"
-            v-model="museum.category1"
-            placeholder="Ex. Cultura"
-          />
-          <label for="category2" class="form__label">Categoria 2</label>
-          <input
-            type="input"
-            class="form__field"
-            v-model="museum.category2"
-            placeholder="Ex. Tradições"
-          />
+
+          <div class="category-section">
+            <div class="category-field">
+              <label for="category1" class="form__label">Categoria 1</label>
+              <select class="form-select" v-model="museum.category1">
+                <option disabled value="">Selecione uma categoria</option>
+                <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
+              </select>
+            </div>
+
+            <div class="category-field">
+              <label for="category2" class="form__label">Categoria 2</label>
+              <select class="form-select" v-model="museum.category2">
+                <option disabled value="">Selecione uma categoria</option>
+                <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
+              </select>
+            </div>
+          </div>
+
           <label for="link" class="form__label">Link</label>
           <input
             type="input"
@@ -59,6 +65,7 @@
             v-model="museum.link"
             placeholder="Ex. http://museucultura.com"
           />
+
           <label for="address" class="form__label">Endereço</label>
           <input
             type="input"
@@ -66,6 +73,7 @@
             v-model="museum.address"
             placeholder="Ex. Avenida das Tradições, 303"
           />
+
           <label for="cep" class="form__label">CEP</label>
           <input
             type="input"
@@ -73,49 +81,28 @@
             v-model="museum.cep"
             placeholder="Ex. 88900-111"
           />
-          <label for="city" class="form__label">Cidade</label>
-          <input
-            type="input"
-            class="form__field"
-            v-model="museum.city"
-            placeholder="Ex. Recife"
-            required
-          />
+
           <label for="state" class="form__label">Estado</label>
           <select
             class="form-select"
-            style="background-color: #e2e2e2;"
             v-model="museum.state"
             name="state"
+            @change="onStateChange"
           >
-            <option value="AC">Acre</option>
-            <option value="AL">Alagoas</option>
-            <option value="AP">Amapá</option>
-            <option value="AM">Amazonas</option>
-            <option value="BA">Bahia</option>
-            <option value="CE">Ceará</option>
-            <option value="DF">Distrito Federal</option>
-            <option value="ES">Espírito Santo</option>
-            <option value="GO">Goiás</option>
-            <option value="MA">Maranhão</option>
-            <option value="MT">Mato Grosso</option>
-            <option value="MS">Mato Grosso do Sul</option>
-            <option value="MG">Minas Gerais</option>
-            <option value="PA">Pará</option>
-            <option value="PB">Paraíba</option>
-            <option value="PR">Paraná</option>
-            <option value="PE">Pernambuco</option>
-            <option value="PI">Piauí</option>
-            <option value="RJ">Rio de Janeiro</option>
-            <option value="RN">Rio Grande do Norte</option>
-            <option value="RS">Rio Grande do Sul</option>
-            <option value="RO">Rondônia</option>
-            <option value="RR">Roraima</option>
-            <option value="SC">Santa Catarina</option>
-            <option value="SP">São Paulo</option>
-            <option value="SE">Sergipe</option>
-            <option value="TO">Tocantins</option>
+            <option disabled value="">Selecione um estado</option>
+            <option v-for="est in states" :key="est.uf" :value="est.uf">{{ est.nome }}</option>
           </select>
+
+          <label for="city" class="form__label">Cidade</label>
+          <select
+            class="form-select"
+            v-model="museum.city"
+            name="city"
+          >
+            <option disabled value="">Selecione uma cidade</option>
+            <option v-for="c in cities" :key="c" :value="c">{{ c }}</option>
+          </select>
+
           <label for="information" class="form__label">Mais Informações</label>
           <textarea
             class="form__field texto"
@@ -123,41 +110,30 @@
             placeholder="Ex. Inclui exposições sobre danças, culinária e festivais regionais."
           ></textarea>
 
-          <label for="manager_id" class="form__label">ID do Gerente</label>
+          <label for="manager_id" class="form__label disabled-field">ID do Gerente</label>
           <input
             type="number"
-            class="form__field"
+            class="form__field disabled-field"
             v-model="museum.manager_id"
             placeholder="Ex. 6"
             disabled
           />
-          
-          <button class="btn btn-success" @click="updateMuseum">Salvar Museu</button>
+
         </div>
-        <button class="btn btn-danger mt-2" @click="deactivateMuseum">Excluir</button>
       </div>
     </div>
 
-    <!-- Seção de Adicionar Obras (já que o museu já está criado) -->
-    <div class="add-obras-section" v-if="museumId">
+    <div v-if="museumId">
       <h3>Adicionar Obras</h3>
       <button class="btn btn-primary" @click="openObraModal">Adicionar Obra</button>
-
-      <!-- Listagem das obras adicionadas -->
       <ul class="obra-list" v-if="works.length > 0">
         <li v-for="(obra, index) in works" :key="obra.id">
           <strong>{{ obra.name }}</strong> - {{ obra.description }} - {{ obra.author || 'Autor Desconhecido' }} - {{ obra.image }}
           <a href="#" @click.prevent="deleteObra(obra.id, index)" style="color:red; margin-left:10px;">Excluir</a>
         </li>
       </ul>
-
-      <!-- Botão para finalizar cadastro (direciona para a página home com alerta) -->
-      <div class="finish-section">
-        <button class="btn btn-success" @click="finishRegistration">Concluir</button>
-      </div>
     </div>
 
-    <!-- Modal para adicionar obra -->
     <div v-if="showObraModal" class="modal-overlay" @click="closeObraModal">
       <div class="modal-content" @click.stop>
         <h4>Adicionar Obra</h4>
@@ -173,9 +149,14 @@
         <label>Link da Imagem</label>
         <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
 
-        <button class="btn btn-success" @click="createObra">Salvar Obra</button>
+        <button class="btn btn-success my-2" @click="createObra">Salvar Obra</button>
         <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
       </div>
+    </div>
+
+    <div class="final-actions" style="text-align:center; margin-top:20px;">
+      <button class="btn btn-success" @click="updateMuseum">Salvar Museu</button>
+      <button class="btn btn-danger" style="margin-left:10px;" @click="deactivateMuseum">Excluir</button>
     </div>
 
   </div>
@@ -200,7 +181,7 @@ export default {
         address: "",
         cep: "",
         city: "",
-        state: "PE",
+        state: "",
         information: "",
         manager_id: null,
         capa: null,
@@ -214,15 +195,42 @@ export default {
         author: "",
         image: ""
       },
-      works: []
+      works: [],
+      categories: ["Esportes", "Pessoas", "Escravidao", "Cultura"],
+      states: [],
+      cities: []
     };
   },
   async created() {
     this.museumId = this.$route.params.id;
     await this.fetchMuseum();
     await this.fetchArtworks();
+    await this.fetchStates();
   },
   methods: {
+    async fetchStates() {
+      try {
+        const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+        const data = await res.json();
+        this.states = data.map(state => ({
+          uf: state.sigla,
+          nome: state.nome
+        }));
+      } catch (error) {
+        console.error("Erro ao carregar estados:", error);
+      }
+    },
+    async onStateChange() {
+      if (!this.museum.state) return;
+      try {
+        const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${this.museum.state}/municipios`);
+        const data = await res.json();
+        this.cities = data.map(city => city.nome);
+        this.museum.city = "";
+      } catch (error) {
+        console.error("Erro ao carregar cidades:", error);
+      }
+    },
     onFileChange(event) {
       const file = event.target.files[0];
       this.museum.capa = file;
@@ -273,6 +281,9 @@ export default {
           ...this.museum,
           ...data
         };
+        if (this.museum.state) {
+          await this.onStateChange();
+        }
       } catch (error) {
         console.error("Erro ao carregar dados do museu:", error);
       }
@@ -381,15 +392,47 @@ export default {
         alert("Erro ao excluir a obra.");
       }
     },
-    finishRegistration() {
-      alert("Museu atualizado com sucesso!");
-      this.$router.push("/");
-    },
   },
 };
 </script>
 
 <style scoped>
+.category-section {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.disabled-field {
+  opacity: 0.5;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.modal-content {
+  position: fixed;
+  background: #fff;
+  padding: 20px;
+  border-radius:20px;
+  box-shadow: 0 0 100px rgba(0,0,0,0.7);
+}
+.category-section {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+.disabled-field {
+  opacity: 0.4;
+}
+.category-field{
+  width: 50%;
+}
 .museu-page {
   padding: 20px;
 }
@@ -407,10 +450,6 @@ export default {
   margin-top: 20px;
 }
 
-.add-obras-section {
-  margin-top: 30px;
-}
-
 .obra-list {
   list-style: none;
   padding: 0;
@@ -420,20 +459,10 @@ export default {
   margin-bottom: 10px;
 }
 
-/* Modal styles */
-.modal-overlay {
-  position: fixed;
-  top:0;left:0;right:0;bottom:0;
-  background-color: rgba(0,0,0,0.5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
 .modal-content {
   background:#fff;
   padding:20px;
-  border-radius:8px;
+  border-radius:20px;
   max-width:400px;
   width:100%;
 }
@@ -450,17 +479,6 @@ export default {
   padding:5px;
   border:1px solid #ccc;
   border-radius:4px;
-}
-/* Estilização do modal */
-.modal-overlay {
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
 }
 
 .modal-form {
@@ -503,8 +521,6 @@ export default {
   border-radius: 4px;
 }
 
-
-
 .form__group {
   position: relative;
   padding: 20px 0;
@@ -520,10 +536,10 @@ export default {
   outline: 0;
   font-size: 1rem;
   color: #000;
-  padding: 7px 10px;
+  padding: 4px 8px;
   background-color: #e2e2e2;
   transition: border-color 0.2s;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .form__field.texto{
   font-size: 1rem;

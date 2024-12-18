@@ -18,7 +18,7 @@
       class="my-profile d-flex flex-row p-0 align-items-center"
     >
       <a class="btn1" v-on:click="openProfile">
-        Hi, {{ firstName }} ({{ userId }})
+        Hi, {{ firstName }}
       </a>
       <a class="btn mx-3 btn-danger" v-on:click="logout">Sair</a>
     </div>
