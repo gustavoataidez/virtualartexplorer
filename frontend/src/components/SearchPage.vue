@@ -23,7 +23,7 @@
 import Visitados from "./Visitados.vue";
 import Disponivel from "./Disponivel.vue";
 import Footer from "./Footer.vue";
-import Header from "./HeaderPage.vue";
+import Header from "./Header.vue";
 
 export default {
   components: { Visitados, Disponivel, Footer, Header },

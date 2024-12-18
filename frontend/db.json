@@ -130,38 +130,6 @@
       "information": "Inclui exposições sobre danças, culinária e festivais regionais.",
       "manager_id": 6,
       "active": true
-    },
-    {
-      "title": "oi",
-      "description": "oi",
-      "category1": "",
-      "category2": "",
-      "link": "",
-      "address": "",
-      "cep": "",
-      "city": "",
-      "state": "PE",
-      "information": "",
-      "manager_id": null,
-      "capa": null,
-      "image": "",
-      "id": 7
-    },
-    {
-      "title": "oi",
-      "description": "oi",
-      "category1": "",
-      "category2": "",
-      "link": "",
-      "address": "",
-      "cep": "",
-      "city": "",
-      "state": "PE",
-      "information": "",
-      "manager_id": null,
-      "capa": null,
-      "image": "",
-      "id": 8
     }
   ],
   "artworks": [

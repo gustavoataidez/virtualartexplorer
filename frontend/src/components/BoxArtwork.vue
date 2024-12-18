@@ -3,7 +3,7 @@
     <div class="column1">
       <h3>{{ artwork.name }}</h3>
       <p>{{ artwork.author || 'Autor Desconhecido' }}</p>
-      <button class="btn btn-primary" @click.stop="openModal">Mais Detalhes</button>
+      <button class="btn btn-warning" @click.stop="openModal">Mais Detalhes</button>
     </div>
 
     <div v-if="showModal" class="modal-overlay" @click="closeModal">
@@ -53,71 +53,57 @@ export default {
   flex-direction: row;
   width: 250px;
   height: 250px;
-  align-items: center;
-  padding: 10px;
-  padding-top: 180px;
+  align-items: end;
+  padding: 15px;
   border-radius: 20px;
   position: relative;
 }
-.detalhes {
-  width: min-content;
-  height: min-content;
-}
+
 h3 {
   color: white;
   font-size: 1.3rem;
   line-height: 1.2rem;
+  font-weight: 600;
 }
 p {
   color: white;
   font-size: 0.8rem;
   line-height: 1rem;
 }
-.detalhes {
-  background-color: var(--vt-c-brow);
-  border: 0px;
-  border-radius: 100%;
-  color: white;
-  font-size: 1rem;
-  padding: 0px;
-  width: 40px;
-  height: 40px;
-}
-.detalhes:hover {
-  background-color: var(--vt-c-indigo);
-  transition: 0.3s;
-}
 
-/* Modal */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left:0;
-  right:0;
-  bottom:0;
-  background-color: rgba(0,0,0,0.5);
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:9999;
+  z-index:11;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* Removido o background-color para não criar overlay */
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
+
 .modal-content {
-  background:#fff;
-  padding:20px;
-  border-radius:8px;
-  max-width:400px;
-  width:100%;
-  text-align:center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  /* Adicionar sombra escura para destacar o modal */
+  box-shadow: 0 0 100px rgba(0,0,0,0.9);
 }
+
 .modal-content h3 {
-  color:#333;
-  font-size:1.5rem;
-  line-height:2rem;
+  color: #333;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 .modal-content p {
-  color:#333;
-  font-size:1rem;
-  line-height:1.2rem;
-  margin:10px 0;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  margin: 10px 0;
 }
 </style>

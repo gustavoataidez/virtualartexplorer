@@ -7,7 +7,8 @@ import MuseumPage from '@/components/pages/MuseumView.vue';
 import MuseumEdit from '@/components/pages/MuseumEditView.vue';
 import MuseumCreate from '@/components/pages/MuseumCreateView.vue';
 import ArtworkPage from '@/components/ArtworkPage.vue';
-import LoginTest from '@/components/LoginTest.vue';
+import ArtworkView from '@/components/pages/ArtworksView.vue';
+import MuseumCategoryView from '@/components/pages/MuseumsCategoryView.vue'; // Importe o novo componente
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -16,16 +17,21 @@ export const router = createRouter({
     { path: '/search', component: SearchPage },
     { path: '/museums', component: MuseumsListView },
     { 
+      path: '/museums/:category',
+      component: MuseumCategoryView,
+      props: true
+    },
+    { 
       path: '/museum/:id', 
       component: MuseumPage, 
-      props: true // Passa o ID como prop para o componente
+      props: true
     },
     { 
       path: '/museum/edit/:id', 
       component: MuseumEdit, 
-      props: true // Passa o ID como prop para o componente
+      props: true
     },
     { path: '/museum/create', component: MuseumCreate },
-    { path: '/artwork', component: ArtworkPage }
+    { path: '/artworks', component: ArtworkView }
   ]
 });

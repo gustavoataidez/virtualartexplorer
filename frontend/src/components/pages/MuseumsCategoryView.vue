@@ -17,7 +17,7 @@
   </template>
   
   <script>
-  import HeaderPage from "../HeaderPage.vue";
+  import HeaderPage from "../Header.vue";
   import Footer from "../Footer.vue";
   import Visitados from "../Visitados.vue";
   

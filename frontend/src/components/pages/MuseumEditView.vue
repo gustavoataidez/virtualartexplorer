@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import HeaderNovo from "../HeaderPage.vue";
+import HeaderNovo from "../Header.vue";
 import FooterNovo from "../Footer.vue";
 import { API_URL } from '@/config';
 
