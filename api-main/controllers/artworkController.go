@@ -181,3 +181,27 @@ func GetArtworksByName(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"artworks": artworks})
 }
+
+func GetArtworkByMuseumId(c *gin.Context){
+	museumIdParam := c.Param("id")
+
+	museumId , err := strconv.Atoi(museumIdParam)
+	if err != nil || museumId <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid museum_id"})
+		return
+	}
+
+	var museum models.Museum
+	if err := database.DB.First(&museum, museumId).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Museum not found"})
+		return
+	}
+
+	var artworks []models.Artwork
+	if err := database.DB.Where("museum_id = ? AND active = ?", museumId, true).Find(&artworks).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, artworks)
+}
