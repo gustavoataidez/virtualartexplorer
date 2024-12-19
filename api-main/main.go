@@ -44,7 +44,7 @@ func main() {
 	r.GET("/api/v1/museums/city/:city", controllers.GetMuseumsByCity)
 	r.GET("/api/v1/museums/state/:state", controllers.GetMuseumsByState)
 	r.GET("/api/v1/museums/name/:name", controllers.GetMuseumsByName)
-	r.GET("api/v1/artworks/museum/:name", controllers.GetArtworksByMuseumName)
+	r.GET("api/v1/artworks/museum/name/:name", controllers.GetArtworksByMuseumName)
 	r.GET("api/v1/artworks/author/:author", controllers.GetArtworksByAuthor)
 	r.GET("api/v1/artworks/name/:name", controllers.GetArtworksByName)
 	r.GET("api/v1/artworks/year/:year", controllers.GetArtworksByYear)
@@ -52,7 +52,8 @@ func main() {
 	r.GET("/api/v1/museums/category", controllers.GetMuseumsByCategory)
 	r.GET("/api/v1/museums/:id", controllers.GetMuseumByID)
 	r.GET("/api/v1/artworks", controllers.GetAllArtworks)
-
+	r.GET("/api/v1/artworks/museum/id/:id", controllers.GetArtworkByMuseumId)
+	r.GET("/api/v1/museums/category/:category", controllers.GetMuseumsByCategory1)
 
 
 

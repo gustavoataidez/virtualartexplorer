@@ -23,7 +23,6 @@
           </div>
         </div>
       </div>
-      <!--
       <div class="sec-obras">
         <span style="font-weight: 600; color: var(--vt-c-brown); line-height: 1rem;">Explore mais</span>
         <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
@@ -35,7 +34,6 @@
           />
         </div>
       </div>
-      -->
     </div>
     <Footer></Footer>
   </div>
@@ -72,16 +70,15 @@ methods: {
     this.museum = null; // Define como null em caso de erro
   }
 },
-  async fetchArtworks(museumId) { // Comentado
-    try {
-      const response = await axios.get(`localhost:3000/artworks/museum/${museumId}`);
-      // Se a resposta não contiver artworks, define uma lista vazia
-      this.artworks = response.data?.artworks || [];
-    } catch (error) {
-      console.error("Erro ao buscar as obras:", error);
-      this.artworks = []; // Define uma lista vazia em caso de erro
-    }
-  },
+async fetchArtworks(museumId) {
+  try {
+    const response = await axios.get(`${API_URL}/artworks/museum/id/${museumId}`);
+    this.artworks = response.data || []; // Trata diretamente como lista
+  } catch (error) {
+    console.error("Erro ao buscar as obras:", error);
+    this.artworks = []; // Define uma lista vazia em caso de erro
+  }
+},
 },
 };
 </script>

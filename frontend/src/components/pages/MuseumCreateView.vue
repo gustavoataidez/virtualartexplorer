@@ -145,6 +145,7 @@
       </div>
     </div>
 
+    
     <div v-if="showObraModal" class="modal-overlay" @click="closeObraModal">
       <div class="modal-content" @click.stop>
         <h4>Adicionar Obra</h4>
@@ -167,7 +168,6 @@
   </div>
   <FooterNovo></FooterNovo>
 </template>
-
 <script>
 import HeaderNovo from "../Header.vue";
 import FooterNovo from "../Footer.vue";
@@ -198,7 +198,7 @@ export default {
         name: "",
         description: "",
         author: "",
-        image: ""
+        image: null, // Define como null por padrão
       },
       works: [],
       categories: ["esportes", "pessoas", "escravidão", "cultura"],
@@ -254,6 +254,7 @@ export default {
         this.museum.capa = file;
       }
     },
+    
     async createMuseum() {
   if (!this.museum.title || !this.museum.description) {
     alert("Título e Descrição são obrigatórios.");
@@ -317,41 +318,54 @@ export default {
       };
     },
     async createObra() {
-      if (!this.newObra.name || !this.newObra.description) {
-        alert("Nome da Obra e Descrição são obrigatórios.");
-        return;
-      }
+  // Validação dos campos obrigatórios
+  if (!this.newObra.name || !this.newObra.description) {
+    alert("Nome da Obra e Descrição são obrigatórios.");
+    return;
+  }
 
-      const obraData = {
-        museum_id: this.museumId,
-        name: this.newObra.name,
-        description: this.newObra.description,
-        author: this.newObra.author,
-        image: this.newObra.image || "",
-        active: true
-      };
+  // Criação dos dados da obra
+  const obraData = {
+    museum_id: this.museumId,
+    name: this.newObra.name.trim(), // Garante que não haja espaços em branco
+    description: this.newObra.description.trim(),
+    author: this.newObra.author?.trim() || "Autor Desconhecido", // Valor padrão para autor
+    active: true, // Valor padrão para ativo
+  };
 
-      try {
-        const response = await fetch(`${API_URL}/artworks`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(obraData),
-        });
+  // Adicionar imagem se estiver presente
+  if (this.newObra.image) {
+    obraData.image = this.newObra.image;
+  }
 
-        if (response.ok) {
-          const createdObra = await response.json();
-          this.works.push(createdObra);
-          this.closeObraModal();
-        } else {
-          alert("Erro ao cadastrar a obra.");
-        }
-      } catch (error) {
-        console.error("Erro ao cadastrar obra:", error);
-        alert("Erro ao cadastrar a obra.");
-      }
-    },
+  try {
+    // Recuperar o token do Vuex
+    const token = this.$store.state.token;
+
+    // Requisição para a API
+    const response = await fetch(`${API_URL}/artworks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Adicionar o token no cabeçalho
+      },
+      body: JSON.stringify(obraData), // Converte os dados para JSON
+    });
+
+    if (response.ok) {
+      const createdObra = await response.json();
+      this.works.push(createdObra); // Atualiza a lista de obras
+      this.closeObraModal(); // Fecha o modal
+      alert("Obra cadastrada com sucesso!");
+    } else {
+      const errorResponse = await response.json();
+      alert(`Erro ao cadastrar a obra: ${errorResponse.error}`);
+    }
+  } catch (error) {
+    console.error("Erro ao cadastrar obra:", error);
+    alert("Erro ao cadastrar a obra.");
+  }
+},
     finishRegistration() {
       alert("Museu criado com sucesso!");
       this.$router.push("/");
