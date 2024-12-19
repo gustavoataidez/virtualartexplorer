@@ -4,7 +4,9 @@
       <h2>
         <a v-on:click="closeLogin">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="30px">
-            <path d="M512 256A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM215 127c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-71 71L392 232c13.3 0 24 10.7 24 24s-10.7 24-24 24l-214.1 0 71 71c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L103 273c-9.4-9.4-9.4-24.6 0-33.9L215 127z"/>
+            <path
+              d="M512 256A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM215 127c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-71 71L392 232c13.3 0 24 10.7 24 24s-10.7 24-24 24l-214.1 0 71 71c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L103 273c-9.4-9.4-9.4-24.6 0-33.9L215 127z"
+            />
           </svg>
         </a>
         Login
@@ -40,8 +42,8 @@ export default {
   data() {
     return {
       loginActive: true,
-      email: "", // Deixe vazio para entrada do usuário
-      password: "", // Deixe vazio para entrada do usuário
+      email: "", // Entrada do email do usuário
+      password: "", // Entrada da senha do usuário
     };
   },
   methods: {
@@ -53,7 +55,10 @@ export default {
         });
 
         if (response.data && response.data.token) {
+          // Emita o evento passando os dados do usuário logado
+          this.$emit("userLoggedIn", response.data);
           alert("Login realizado com sucesso!");
+          this.closeLogin();
         } else {
           alert("Login falhou. Tente novamente.");
         }

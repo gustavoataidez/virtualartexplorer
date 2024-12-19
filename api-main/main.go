@@ -6,6 +6,7 @@ import (
 	"museum-api/database"
 	"museum-api/utils"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -25,9 +26,19 @@ func main() {
 	database.InitDB()
 	database.RunMigrations()
 
+	// Inicia o router Gin
 	r := gin.Default()
 
-	// Endpoint público (sem autenticação)
+	// Adiciona o middleware de CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // Permitir o domínio do frontend
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	// Endpoints públicos (sem autenticação)
 	r.POST("/api/v1/managers", controllers.CreateManager)
 	r.POST("/api/v1/login", controllers.Login)
 	r.GET("/api/v1/museums/city/:city", controllers.GetMuseumsByCity)
@@ -40,6 +51,7 @@ func main() {
 	r.GET("/api/v1/museums", controllers.GetAllMuseums)
 	r.GET("/api/v1/museums/category", controllers.GetMuseumsByCategory)
 
+	// Endpoints protegidos por autenticação (usando middleware de validação de token)
 	auth := r.Group("/api/v1")
 	auth.Use(utils.ValidateTokenMiddleware)
 
@@ -52,5 +64,6 @@ func main() {
 	auth.PUT("/artworks/:id/disable", controllers.DisableArtwork)
 	auth.PUT("/artworks/:id", controllers.UpdateArtwork)
 
+	// Inicializa o servidor na porta 3000
 	r.Run(":3000")
 }

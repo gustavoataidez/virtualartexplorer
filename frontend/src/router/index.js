@@ -14,7 +14,7 @@ import MuseumCategoryView from '@/components/pages/MuseumsCategoryView.vue'; // 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: test },
+    { path: '/', component: Home },
     { path: '/search', component: SearchPage },
     { path: '/museums', component: MuseumsListView },
     { 

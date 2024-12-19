@@ -32,7 +32,6 @@ func CreateManager(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Manager created successfully"})
 }
-
 func Login(c *gin.Context) {
 	var credentials models.ManagerLogin
 	if err := c.ShouldBindJSON(&credentials); err != nil {
@@ -57,7 +56,12 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{
+		"id":         manager.ID,
+		"firstname":  manager.FirstName,
+		"lastname":   manager.LastName,
+		"token":      token,
+	})
 }
 
 func UpdateManager(c *gin.Context) {
