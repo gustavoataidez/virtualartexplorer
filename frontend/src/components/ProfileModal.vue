@@ -24,19 +24,19 @@
 </template>
 
 <script>
-import axios from "axios";
+import { API_URL } from "@/config";
 
 export default {
   name: "ProfileModal",
   data() {
     return {
-      museums: [], // Lista de museus
+      museums: [], // Lista de museus do usuário
     };
   },
   computed: {
-    // Obtém o ID do usuário diretamente do Vuex
-    userId() {
-      return this.$store.state.user?.id || null;
+    // Obtém o token diretamente do Vuex para autenticação
+    token() {
+      return this.$store.state.token;
     },
   },
   mounted() {
@@ -45,10 +45,20 @@ export default {
   methods: {
     async fetchMuseums() {
       try {
-        // Busca todos os museus da API
-        const response = await axios.get("http://localhost:3000/museums");
-        // Filtra os museus para mostrar apenas aqueles associados ao usuário logado
-        this.museums = response.data.filter((museum) => museum.manager_id === this.userId);
+        // Faz a requisição para a API usando o token de autenticação
+        const response = await fetch(`${API_URL}/museums/my`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.museums = data; // Atualiza a lista de museus
+        } else {
+          console.error("Erro ao buscar museus: ", await response.text());
+        }
       } catch (error) {
         console.error("Erro ao buscar os museus:", error);
       }

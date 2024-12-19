@@ -17,7 +17,6 @@
       <Footer></Footer>
     </div>
   </template>
-  
   <script>
   import HeaderPage from "../Header.vue";
   import Footer from "../Footer.vue";
@@ -29,11 +28,11 @@
     components: {
       HeaderPage,
       Footer,
-      BoxArtwork
+      BoxArtwork,
     },
     data() {
       return {
-        artworks: [] // Lista de obras de arte
+        artworks: [],
       };
     },
     async created() {
@@ -43,14 +42,15 @@
       async fetchArtworks() {
         try {
           const response = await axios.get(`${API_URL}/artworks`);
-          this.artworks = response.data;
+          const { artworks } = response.data; // Adapta para o novo formato
+          this.artworks = artworks || [];
         } catch (error) {
           console.error("Erro ao buscar as obras de arte:", error);
         }
-      }
-    }
+      },
+    },
   };
-  </script>
+  </script>  
   
   <style scoped>
   .page {

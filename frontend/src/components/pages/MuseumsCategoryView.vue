@@ -25,18 +25,18 @@
     components: {
       HeaderPage,
       Footer,
-      Visitados
+      Visitados,
     },
     data() {
       return {
-        category: this.$route.params.category
+        category: this.$route.params.category,
       };
     },
     watch: {
-      '$route.params.category'(newVal) {
+      "$route.params.category"(newVal) {
         this.category = newVal;
-      }
-    }
+      },
+    },
   };
   </script>
   

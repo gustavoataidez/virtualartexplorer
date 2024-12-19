@@ -50,6 +50,11 @@ func main() {
 	r.GET("api/v1/artworks/year/:year", controllers.GetArtworksByYear)
 	r.GET("/api/v1/museums", controllers.GetAllMuseums)
 	r.GET("/api/v1/museums/category", controllers.GetMuseumsByCategory)
+	r.GET("/api/v1/museums/:id", controllers.GetMuseumByID)
+	r.GET("/api/v1/artworks", controllers.GetAllArtworks)
+
+
+
 
 	// Endpoints protegidos por autenticação (usando middleware de validação de token)
 	auth := r.Group("/api/v1")
@@ -63,6 +68,9 @@ func main() {
 	auth.PUT("/managers/:id/disable", controllers.DisableManager)
 	auth.PUT("/artworks/:id/disable", controllers.DisableArtwork)
 	auth.PUT("/artworks/:id", controllers.UpdateArtwork)
+
+	// Adiciona a nova rota para listar museus do usuário autenticado
+	auth.GET("/museums/my", controllers.GetMuseumsByAuthenticatedUser)
 
 	// Inicializa o servidor na porta 3000
 	r.Run(":3000")
