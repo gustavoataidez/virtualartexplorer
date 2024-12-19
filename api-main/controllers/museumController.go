@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"io/ioutil"
-	"mime/multipart"
 	"museum-api/database"
 	"museum-api/models"
 	"net/http"
@@ -14,9 +13,17 @@ import (
 func CreateMuseum(c *gin.Context) {
 	var museum models.Museum
 
-	// Bind form data
+	// Bind obrigatório para title e description
 	museum.Title = c.PostForm("title")
 	museum.Description = c.PostForm("description")
+
+	// Verifica se title e description foram fornecidos
+	if museum.Title == "" || museum.Description == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Title and description are required"})
+		return
+	}
+
+	// Bind opcional para os outros campos
 	museum.Category1 = c.PostForm("category1")
 	museum.Category2 = c.PostForm("category2")
 	museum.Link = c.PostForm("link")
@@ -26,31 +33,23 @@ func CreateMuseum(c *gin.Context) {
 	museum.State = c.PostForm("state")
 	museum.Information = c.PostForm("information")
 
-	// Decode image
+	// Processa imagem, se fornecida
 	file, err := c.FormFile("image")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get image"})
-		return
-	}
-
-	imageFile, err := file.Open()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open image"})
-		return
-	}
-	defer func(imageFile multipart.File) {
-		err := imageFile.Close()
+	if err == nil { // Apenas tenta processar a imagem se ela for enviada
+		imageFile, err := file.Open()
 		if err != nil {
-
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open image"})
+			return
 		}
-	}(imageFile)
+		defer imageFile.Close()
 
-	imageBytes, err := ioutil.ReadAll(imageFile)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read image"})
-		return
+		imageBytes, err := ioutil.ReadAll(imageFile)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read image"})
+			return
+		}
+		museum.Image = imageBytes
 	}
-	museum.Image = imageBytes
 
 	// Pega o ID do gerente pelo token
 	managerID, exists := c.Get("manager_id")
@@ -69,8 +68,6 @@ func CreateMuseum(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Museu cadastrado com sucesso", "museum": museum})
 }
 
-// UpdateMuseum atualiza um museu no banco de dados, alterando apenas
-// os campos que foram passados no corpo da requisição
 func UpdateMuseum(c *gin.Context) {
 	var updateData models.Museum
 	if err := c.ShouldBindJSON(&updateData); err != nil {

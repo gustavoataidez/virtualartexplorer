@@ -6,3 +6,5 @@ CREATE TABLE if not exists managers (
     password VARCHAR(100) NOT NULL,
     active BOOLEAN DEFAULT true
 );
+
+

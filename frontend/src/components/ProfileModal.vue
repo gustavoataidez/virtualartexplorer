@@ -2,13 +2,13 @@
   <div id="background">
     <div class="backdrop">
       <h2>Meu Perfil</h2>
-      <p>Bem-vindo(a), {{ userEmail }}</p>
+      <p>Bem-vindo(a), {{ $store.getters.userFirstName }}</p>
       <button class="btn-action" @click="$emit('navigateToCreate')">
         Criar Museu
       </button>
 
       <div v-if="museums.length > 0" class="museums-list">
-        <h3>Museus</h3>
+        <h3>Seus Museus</h3>
         <div v-for="museum in museums" :key="museum.id">
           <button class="btn-museum" @click="openMuseum(museum.id)">
             {{ museum.title }}
@@ -28,20 +28,16 @@ import axios from "axios";
 
 export default {
   name: "ProfileModal",
-  props: {
-    userEmail: {
-      type: String,
-      required: true,
-    },
-    userId: {
-      type: Number,
-      required: true,
-    },
-  },
   data() {
     return {
-      museums: [], // Armazena todos os museus retornados pela API
+      museums: [], // Lista de museus
     };
+  },
+  computed: {
+    // Obtém o ID do usuário diretamente do Vuex
+    userId() {
+      return this.$store.state.user?.id || null;
+    },
   },
   mounted() {
     this.fetchMuseums();
@@ -49,15 +45,16 @@ export default {
   methods: {
     async fetchMuseums() {
       try {
-        // Faz uma chamada à API para buscar todos os museus
+        // Busca todos os museus da API
         const response = await axios.get("http://localhost:3000/museums");
-        this.museums = response.data; // Armazena todos os museus sem filtrar
+        // Filtra os museus para mostrar apenas aqueles associados ao usuário logado
+        this.museums = response.data.filter((museum) => museum.manager_id === this.userId);
       } catch (error) {
         console.error("Erro ao buscar os museus:", error);
       }
     },
     openMuseum(museumId) {
-      // Redireciona para a página do museu
+      // Redireciona para a página de edição do museu
       this.$router.push(`/museum/edit/${museumId}`);
     },
   },

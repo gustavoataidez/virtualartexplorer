@@ -64,9 +64,16 @@ export default {
 
       try {
         const response = await axios.get(url);
-        this.items = response.data; // Obtém todos os museus da rota informada
+        
+        // Atualizado para acessar a chave "museums"
+        if (response.data && Array.isArray(response.data.museums)) {
+          this.items = response.data.museums; // Obtém os museus do array "museums"
+        } else {
+          console.error("Dados inválidos ou formato inesperado:", response.data);
+          this.items = [];
+        }
       } catch (e) {
-        console.error("Error fetching data:", e);
+        console.error("Erro ao buscar dados:", e);
       }
     },
     goToMuseum(id) {

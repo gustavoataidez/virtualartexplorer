@@ -3,7 +3,6 @@ import { createWebHistory, createRouter } from 'vue-router';
 import Home from '@/components/pages/Home.vue';
 import MuseumsListView from '@/components/pages/MuseumsListView.vue';
 import SearchPage from '@/components/SearchPage.vue';
-import test from '@/components/test.vue';
 import MuseumPage from '@/components/pages/MuseumView.vue';
 import MuseumEdit from '@/components/pages/MuseumEditView.vue';
 import MuseumCreate from '@/components/pages/MuseumCreateView.vue';

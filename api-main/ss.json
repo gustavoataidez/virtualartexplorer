@@ -1,0 +1,21 @@
+{
+    "museums": [
+        {
+        "id": 1,
+        "title": "Museu das Artes",
+        "description": "Um museu dedicado às artes visuais.",
+        "image": null,
+        "category1": "",
+        "category2": "",
+        "link": "",
+        "address": "",
+        "cep": "",
+        "city": "",
+        "state": "",
+        "information": "",
+        "manager_id": 5,
+        "artworks": null,
+        "active": true
+        }
+    ]
+}

@@ -250,40 +250,60 @@ export default {
     },
     onFileChange(event) {
       const file = event.target.files[0];
-      this.museum.capa = file;
+      if (file) {
+        this.museum.capa = file;
+      }
     },
     async createMuseum() {
-      if (!this.museum.title || !this.museum.description) {
-        alert("Título e Descrição são obrigatórios.");
-        return;
-      }
+  if (!this.museum.title || !this.museum.description) {
+    alert("Título e Descrição são obrigatórios.");
+    return;
+  }
 
-      const museumData = {
-        ...this.museum,
-        image: this.museum.capa ? URL.createObjectURL(this.museum.capa) : "",
-      };
+  // FormData para enviar os dados do museu
+  const formData = new FormData();
+  formData.append("title", this.museum.title);
+  formData.append("description", this.museum.description);
+  formData.append("category1", this.museum.category1);
+  formData.append("category2", this.museum.category2);
+  formData.append("link", this.museum.link);
+  formData.append("address", this.museum.address);
+  formData.append("cep", this.museum.cep);
+  formData.append("city", this.museum.city);
+  formData.append("state", this.museum.state);
+  formData.append("information", this.museum.information);
+  
+  // Adicionar imagem ao FormData (se existir)
+  if (this.museum.capa) {
+    formData.append("image", this.museum.capa);
+  }
 
-      try {
-        const response = await fetch(`${API_URL}/museums`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(museumData),
-        });
+  try {
+    // Obtendo o token do Vuex
+    const token = this.$store.state.token;
 
-        if (response.ok) {
-          const createdMuseum = await response.json();
-          this.museumId = createdMuseum.id;
-          this.museumCreated = true;
-        } else {
-          alert("Erro ao cadastrar o museu.");
-        }
-      } catch (error) {
-        console.error("Erro ao cadastrar:", error);
-        alert("Erro ao cadastrar o museu.");
-      }
-    },
+    const response = await fetch(`${API_URL}/museums`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+      },
+      body: formData, // Envia o FormData
+    });
+
+    if (response.ok) {
+      const createdMuseum = await response.json();
+      this.museumId = createdMuseum.id; // Salva o ID do museu criado
+      this.museumCreated = true; // Atualiza o estado para indicar que o museu foi criado
+      alert("Museu criado com sucesso!");
+    } else {
+      const errorResponse = await response.json();
+      alert(`Erro ao cadastrar o museu: ${errorResponse.error}`);
+    }
+  } catch (error) {
+    console.error("Erro ao cadastrar:", error);
+    alert("Erro ao cadastrar o museu.");
+  }
+},
     openObraModal() {
       this.showObraModal = true;
     },
