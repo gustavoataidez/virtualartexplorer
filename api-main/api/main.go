@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"museum-api/api/controllers"
 	"museum-api/api/database"
 	"museum-api/api/utils"
@@ -36,7 +37,13 @@ func setupRouter() *gin.Engine {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
-
+	
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to the API",
+		})
+	})
+	
 	// Endpoints públicos (sem autenticação)
 	r.POST("/api/v1/managers", controllers.CreateManager)
 	r.POST("/api/v1/login", controllers.Login)
@@ -73,8 +80,8 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-// Handler exportado para Vercel
 func Handler(w http.ResponseWriter, r *http.Request) {
-	router := setupRouter()
-	router.ServeHTTP(w, r)
+    log.Printf("Received request: %s %s", r.Method, r.URL.Path)
+    router := setupRouter()
+    router.ServeHTTP(w, r)
 }

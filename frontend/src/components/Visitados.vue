@@ -60,14 +60,14 @@ export default {
       return title;
     },
     async fetchData() {
-      const url = `${API_URL}/${this.urlAPI}`;
+      const url = `${API_URL}`;
 
       try {
         const response = await axios.get(url);
         
         // Atualizado para acessar a chave "museums"
-        if (response.data && Array.isArray(response.data.museums)) {
-          this.items = response.data.museums; // Obtém os museus do array "museums"
+        if (response.data && Array.isArray(response.data)) {
+          this.items = response.data; // Obtém os museus do array "museums"
         } else {
           console.error("Dados inválidos ou formato inesperado:", response.data);
           this.items = [];
