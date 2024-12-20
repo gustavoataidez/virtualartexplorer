@@ -43,13 +43,18 @@ func main() {
 	r.GET("/api/v1/museums/city/:city", controllers.GetMuseumsByCity)
 	r.GET("/api/v1/museums/state/:state", controllers.GetMuseumsByState)
 	r.GET("/api/v1/museums/name/:name", controllers.GetMuseumsByName)
-	r.GET("/api/v1/artworks/museum/:name", controllers.GetArtworksByMuseumName)
-	r.GET("/api/v1/artworks/author/:author", controllers.GetArtworksByAuthor)
-	r.GET("/api/v1/artworks/museum/:id", controllers.GetArtworkByMuseumId)
-	r.GET("/api/v1/artworks/name/:name", controllers.GetArtworksByName)
-	r.GET("/api/v1/artworks/year/:year", controllers.GetArtworksByYear)
+	r.GET("api/v1/artworks/museum/:name", controllers.GetArtworksByMuseumName)
+	r.GET("api/v1/artworks/author/:author", controllers.GetArtworksByAuthor)
+	r.GET("api/v1/artworks/name/:name", controllers.GetArtworksByName)
+	r.GET("api/v1/artworks/year/:year", controllers.GetArtworksByYear)
 	r.GET("/api/v1/museums", controllers.GetAllMuseums)
 	r.GET("/api/v1/museums/category", controllers.GetMuseumsByCategory)
+	r.GET("/api/v1/museums/:id", controllers.GetMuseumByID)
+	r.GET("/api/v1/artworks", controllers.GetAllArtworks)
+	r.GET("/api/v1/artworks/museum/id/:id", controllers.GetArtworkByMuseumId)
+	r.GET("/api/v1/museums/category/:category", controllers.GetMuseumsByCategory1)
+
+
 
 	auth := r.Group("/api/v1")
 	auth.Use(utils.ValidateTokenMiddleware)
@@ -62,6 +67,9 @@ func main() {
 	auth.PUT("/managers/:id/disable", controllers.DisableManager)
 	auth.PUT("/artworks/:id/disable", controllers.DisableArtwork)
 	auth.PUT("/artworks/:id", controllers.UpdateArtwork)
+
+	// Adiciona a nova rota para listar museus do usuário autenticado
+	auth.GET("/museums/my", controllers.GetMuseumsByAuthenticatedUser)
 
 	r.Run(":3000")
 }

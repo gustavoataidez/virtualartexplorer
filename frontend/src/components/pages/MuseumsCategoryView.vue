@@ -8,7 +8,7 @@
         <h2 class="title-h2 mb-4">Museus da categoria: {{ category }}</h2>
   
         <!-- Visitados com o endpoint baseado na categoria -->
-        <Visitados :urlAPI="`museums?category1=${category}`"></Visitados>
+        <Visitados :urlAPI="`museums/category/${category}`"></Visitados>
       </div>
   
       <!-- Rodapé -->
@@ -25,18 +25,18 @@
     components: {
       HeaderPage,
       Footer,
-      Visitados
+      Visitados,
     },
     data() {
       return {
-        category: this.$route.params.category
+        category: this.$route.params.category,
       };
     },
     watch: {
-      '$route.params.category'(newVal) {
+      "$route.params.category"(newVal) {
         this.category = newVal;
-      }
-    }
+      },
+    },
   };
   </script>
   

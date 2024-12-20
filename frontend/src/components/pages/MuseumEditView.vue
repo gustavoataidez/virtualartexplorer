@@ -290,7 +290,7 @@ export default {
     },
     async fetchArtworks() {
       try {
-        const response = await fetch(`${API_URL}/artworks?museum_id=${this.museumId}`);
+        const response = await fetch(`${API_URL}/artworks/museum/id/${this.museumId}`);
         if (!response.ok) {
           throw new Error("Erro ao buscar obras de arte");
         }
@@ -341,42 +341,57 @@ export default {
         image: ""
       };
     },
+
     async createObra() {
-      if (!this.newObra.name || !this.newObra.description) {
-        alert("Nome da Obra e Descrição são obrigatórios.");
-        return;
-      }
+  if (!this.newObra.name || !this.newObra.description) {
+    alert("Nome e Descrição são obrigatórios.");
+    return;
+  }
 
-      const obraData = {
-        museum_id: this.museumId,
-        name: this.newObra.name,
-        description: this.newObra.description,
-        author: this.newObra.author,
-        image: this.newObra.image || "",
-        active: true
-      };
+  // Captura o ID do museu da rota atual
+  const museumId = this.$route.params.id;
 
-      try {
-        const response = await fetch(`${API_URL}/artworks`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(obraData),
-        });
+  // Criação do payload
+  const obraData = {
+    museum_id: museumId, // Define o ID do museu a partir da rota
+    name: this.newObra.name,
+    description: this.newObra.description,
+    author: this.newObra.author || "Autor Desconhecido",
+    image: this.newObra.image || null, // Pode ser `null` se não for fornecido
+    active: true,
+  };
 
-        if (response.ok) {
-          const createdObra = await response.json();
-          this.works.push(createdObra);
-          this.closeObraModal();
-        } else {
-          alert("Erro ao cadastrar a obra.");
-        }
-      } catch (error) {
-        console.error("Erro ao cadastrar obra:", error);
-        alert("Erro ao cadastrar a obra.");
-      }
-    },
+  try {
+    const token = this.$store.state.token; // Obter token do Vuex
+
+    const response = await fetch(`${API_URL}/artworks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Certifique-se de que o token está correto
+      },
+      body: JSON.stringify(obraData),
+    });
+
+    if (response.ok) {
+      const createdObra = await response.json();
+      this.works.push(createdObra); // Atualiza a lista de obras
+      this.closeObraModal(); // Fecha o modal
+      alert("Obra criada com sucesso!");
+    } else {
+      const errorResponse = await response.json();
+      console.error("Erro ao cadastrar obra:", errorResponse);
+      alert(`Erro ao cadastrar obra: ${errorResponse.message || "Erro desconhecido"}`);
+    }
+  } catch (error) {
+    console.error("Erro ao cadastrar obra:", error);
+    alert("Erro ao cadastrar a obra.");
+  }
+},
+
+
+
+
     async deleteObra(id, index) {
       try {
         const response = await fetch(`${API_URL}/artworks/${id}`, {

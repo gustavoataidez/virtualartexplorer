@@ -12,52 +12,99 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateArtwork(c *gin.Context) {
-	var artwork models.Artwork
+func GetAllArtworks(c *gin.Context) {
+	// Variável para armazenar todas as obras de arte
+	var artworks []models.Artwork
 
-	museumIDStr := c.PostForm("museum_id")
-	museumID, err := strconv.Atoi(museumIDStr)
-	if err != nil || museumID <= 0 {
+	// Busca todas as obras de arte no banco de dados
+	if err := database.DB.Find(&artworks).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch artworks"})
+		return
+	}
+
+	// Retorna as obras de arte
+	c.JSON(http.StatusOK, artworks)
+}
+
+func GetArtworkByMuseumId(c *gin.Context){
+	museumIdParam := c.Param("id")
+
+	museumId , err := strconv.Atoi(museumIdParam)
+	if err != nil || museumId <= 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid museum_id"})
 		return
 	}
-	artwork.MuseumID = uint(museumID)
-
-	artwork.Name = c.PostForm("name")
-	artwork.Description = c.PostForm("description")
-	artwork.Author = c.PostForm("author")
-
-	file, err := c.FormFile("image")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get image"})
-		return
-	}
-
-	imageFile, err := file.Open()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open image"})
-		return
-	}
-	defer func(imageFile multipart.File) {
-		err := imageFile.Close()
-		if err != nil {
-
-		}
-	}(imageFile)
-
-	imageBytes, err := ioutil.ReadAll(imageFile)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read image"})
-		return
-	}
-	artwork.Image = imageBytes
 
 	var museum models.Museum
-	if err := database.DB.First(&museum, artwork.MuseumID).Error; err != nil {
+	if err := database.DB.First(&museum, museumId).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Museum not found"})
 		return
 	}
 
+	var artworks []models.Artwork
+	if err := database.DB.Where("museum_id = ? AND active = ?", museumId, true).Find(&artworks).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, artworks)
+}
+
+func CreateArtwork(c *gin.Context) {
+	var artwork models.Artwork
+
+	// Obtém o título (obrigatório)
+	artwork.Name = c.PostForm("name")
+	if artwork.Name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Name is required"})
+		return
+	}
+
+	// Obtém o museum_id (opcional)
+	museumIDStr := c.PostForm("museum_id")
+	if museumIDStr != "" {
+		museumID, err := strconv.Atoi(museumIDStr)
+		if err != nil || museumID <= 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid museum_id"})
+			return
+		}
+		artwork.MuseumID = uint(museumID)
+
+		// Verifica se o museu existe
+		var museum models.Museum
+		if err := database.DB.First(&museum, artwork.MuseumID).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Museum not found"})
+			return
+		}
+	}
+
+	// Obtém a descrição (opcional)
+	artwork.Description = c.PostForm("description")
+
+	// Obtém o autor (opcional)
+	artwork.Author = c.PostForm("author")
+
+	// Obtém a imagem (opcional)
+	file, err := c.FormFile("image")
+	if err == nil {
+		imageFile, err := file.Open()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open image"})
+			return
+		}
+		defer func(imageFile multipart.File) {
+			_ = imageFile.Close()
+		}(imageFile)
+
+		imageBytes, err := ioutil.ReadAll(imageFile)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read image"})
+			return
+		}
+		artwork.Image = imageBytes
+	}
+
+	// Salva a obra de arte no banco de dados
 	if err := database.DB.Create(&artwork).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -65,6 +112,7 @@ func CreateArtwork(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Artwork created successfully", "artwork": artwork})
 }
+
 
 func UpdateArtwork(c *gin.Context) {
 	var artwork models.Artwork

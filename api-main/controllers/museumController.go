@@ -10,6 +10,74 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetMuseumsByCategory1(c *gin.Context) {
+	// Obtém a categoria dos parâmetros da rota
+	category := c.Param("category")
+
+	// Verifica se a categoria foi fornecida
+	if category == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Category1 is required"})
+		return
+	}
+
+	// Variável para armazenar os museus encontrados
+	var museums []models.Museum
+
+	// Busca os museus no banco de dados associados à category1
+	if err := database.DB.Where("category1 = ?", category).Find(&museums).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch museums"})
+		return
+	}
+
+	// Retorna os museus encontrados
+	c.JSON(http.StatusOK, museums)
+}
+
+func GetMuseumByID(c *gin.Context) {
+	// Obtém o ID do museu a partir dos parâmetros da URL
+	idParam := c.Param("id")
+
+	// Converte o ID para inteiro
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid museum ID"})
+		return
+	}
+
+	// Variável para armazenar os dados do museu
+	var museum models.Museum
+
+	// Busca o museu no banco de dados
+	if err := database.DB.First(&museum, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Museum not found"})
+		return
+	}
+
+	// Retorna os dados do museu
+	c.JSON(http.StatusOK, museum)
+}
+
+// GetMuseumsByAuthenticatedUser retorna os museus associados ao gerente autenticado
+func GetMuseumsByAuthenticatedUser(c *gin.Context) {
+	// Obtém o manager_id do contexto, definido pelo middleware
+	managerID, exists := c.Get("manager_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+		return
+	}
+
+	var museums []models.Museum
+
+	// Busca os museus no banco de dados associados ao manager_id
+	if err := database.DB.Where("manager_id = ?", managerID).Find(&museums).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch museums"})
+		return
+	}
+
+	// Retorna os museus encontrados
+	c.JSON(http.StatusOK, museums)
+}
+
 func CreateMuseum(c *gin.Context) {
 	var museum models.Museum
 
