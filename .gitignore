@@ -12,6 +12,8 @@ node_modules
 coverage
 *.local
 
+/frontend/build
+
 /cypress/videos/
 /cypress/screenshots/
 
