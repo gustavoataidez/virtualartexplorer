@@ -4,8 +4,8 @@ import (
 	"errors"
 	"io/ioutil"
 	"mime/multipart"
-	"museum-api/database"
-	"museum-api/models"
+	"museum-api/api/database"
+	"museum-api/api/models"
 	"net/http"
 	"strconv"
 

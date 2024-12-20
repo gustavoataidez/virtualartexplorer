@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"io/ioutil"
-	"museum-api/database"
-	"museum-api/models"
+	"museum-api/api/database"
+	"museum-api/api/models"
 	"net/http"
 	"strconv"
 

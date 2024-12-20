@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"museum-api/database"
-	"museum-api/models"
-	"museum-api/utils"
+	"museum-api/api/database"
+	"museum-api/api/models"
+	"museum-api/api/utils"
 	"net/http"
 	"strconv"
 
