@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func RunMigrations() {
@@ -23,9 +24,21 @@ func RunMigrations() {
 }
 
 func applyMigration(file string) error {
-	migration, err := os.ReadFile(file)
+	// Obter o caminho absoluto do arquivo de migração
+	basePath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get working directory: %v", err)
+	}
+
+	fullPath := filepath.Join(basePath, file)
+	log.Printf("Applying migration from file: %s", fullPath)
+
+	// Ler o conteúdo do arquivo
+	migration, err := os.ReadFile(fullPath)
 	if err != nil {
 		return err
 	}
+
+	// Executar a migração no banco de dados
 	return DB.Exec(string(migration)).Error
 }
