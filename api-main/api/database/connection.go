@@ -1,37 +1,39 @@
 package database
 
 import (
-	"fmt"
+	"log"
+
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 var DB *gorm.DB
 
+// InitDB initializes the database connection using the DB_URL environment variable
 func InitDB() {
-	host := viper.GetString("DB_HOST")
-	port := viper.GetString("DB_PORT")
-	user := viper.GetString("DB_USER")
-	password := viper.GetString("DB_PASSWORD")
-	dbname := viper.GetString("DB_NAME")
+	// Obter a URL do banco de dados da variável de ambiente
+	dbURL := viper.GetString("DB_URL")
+	if dbURL == "" {
+		log.Fatalf("DB_URL is not set. Please configure the database connection string.")
+	}
 
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
+	// Conectar ao banco de dados usando a string de conexão
 	var err error
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
+
+	log.Println("Successfully connected to the database.")
 }
 
+// CreateDatabase ensures that the database exists (no-op when using a single DB_URL)
 func CreateDatabase() {
+	// Verificar se a conexão com o banco está inicializada
 	if DB == nil {
 		log.Fatalf("Database connection is nil")
 	}
-	if err := DB.Exec("CREATE DATABASE IF NOT EXISTS museum_db").Error; err != nil {
-		log.Fatalf("Failed to create database: %v", err)
-	}
+
+	log.Println("Database connection is active. Skipping explicit database creation since DB_URL is used.")
 }

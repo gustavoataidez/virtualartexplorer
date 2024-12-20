@@ -1,13 +1,10 @@
-package main
+package handler
 
 import (
-	"context"
-	"log"
 	"museum-api/api/controllers"
 	"museum-api/api/database"
 	"museum-api/api/utils"
 	"net/http"
-	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -17,9 +14,9 @@ import (
 
 func initConfig() {
 	if err := godotenv.Load(); err != nil {
-		log.Printf("Error loading .env file: %v", err)
+		// Se o .env não for encontrado, apenas avise (não é crítico)
+		println("No .env file found.")
 	}
-
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 }
@@ -29,10 +26,9 @@ func setupRouter() *gin.Engine {
 	database.InitDB()
 	database.RunMigrations()
 
-	// Inicia o router Gin
 	r := gin.Default()
 
-	// Adiciona o middleware de CORS
+	// Configuração de CORS
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"}, // Permitir o domínio do frontend
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -77,19 +73,8 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-// Handler para o Vercel
-func Handler(ctx context.Context, rw http.ResponseWriter, req *http.Request) {
+// Handler exportado para Vercel
+func Handler(w http.ResponseWriter, r *http.Request) {
 	router := setupRouter()
-	router.ServeHTTP(rw, req)
-}
-
-func main() {
-	if os.Getenv("VERCEL") != "" {
-		log.Println("Running on Vercel environment")
-		return
-	}
-
-	// Inicializa o servidor localmente
-	router := setupRouter()
-	router.Run(":3000")
+	router.ServeHTTP(w, r)
 }
