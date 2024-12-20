@@ -119,62 +119,31 @@
             :disabled="museumCreated"
             placeholder="Ex. Inclui exposições sobre danças, culinária e festivais regionais."
           ></textarea>
-
-
         </div>
       </div>
     </div>
-    
     <div class="save-museum-section" v-if="!museumCreated">
       <button class="btn btn-success" @click="createMuseum">Salvar Museu</button>
     </div>
 
-    <div v-if="museumCreated" class="add-obras-section">
-      <h3>Adicionar Obras</h3>
-      <button class="btn btn-primary" @click="openObraModal">Adicionar Obra</button>
-
-      <ul class="obra-list" v-if="works.length > 0">
-        <li v-for="(obra, index) in works" :key="obra.id">
-          <strong>{{ obra.name }}</strong> - {{ obra.description }} - {{ obra.author || 'Autor Desconhecido' }} - {{ obra.image }}
-          <a href="#" @click.prevent="deleteObra(obra.id, index)" style="color:red; margin-left:10px;">Excluir</a>
-        </li>
-      </ul>
-
-      <div class="finish-section">
-        <button class="btn btn-success" @click="finishRegistration">Concluir</button>
-      </div>
-    </div>
-
-    
-    <div v-if="showObraModal" class="modal-overlay" @click="closeObraModal">
-      <div class="modal-content" @click.stop>
-        <h4>Adicionar Obra</h4>
-        <label>Nome da Obra</label>
-        <input type="text" v-model="newObra.name" placeholder="Ex. O Grito" required/>
-
-        <label>Descrição</label>
-        <textarea v-model="newObra.description" placeholder="Descrição da obra" required></textarea>
-
-        <label>Autor</label>
-        <input type="text" v-model="newObra.author" placeholder="Ex. Edvard Munch"/>
-
-        <label>Link da Imagem</label>
-        <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
-
-        <button class="btn btn-success my-2" @click="createObra">Salvar Obra</button>
-        <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
-      </div>
-    </div>
+    <ArtworkCreate v-if="museumCreated" :museumId="currentMuseumId" />
   </div>
   <FooterNovo></FooterNovo>
 </template>
+
 <script>
 import HeaderNovo from "../Header.vue";
 import FooterNovo from "../Footer.vue";
-import { API_URL } from '@/config';
+import ArtworkCreate from "./ArtworkCreate.vue";
+import { API_URL } from "@/config";
 
 export default {
-  components: { HeaderNovo, FooterNovo },
+  components: { HeaderNovo, FooterNovo, ArtworkCreate },
+  computed: {
+    currentMuseumId() {
+      return this.$store.state.currentMuseumId; // Obtém o ID do museu do Vuex
+    },
+  },
   data() {
     return {
       museum: {
@@ -192,183 +161,50 @@ export default {
         capa: null,
       },
       museumCreated: false,
-      museumId: null,
-      showObraModal: false,
-      newObra: {
-        name: "",
-        description: "",
-        author: "",
-        image: null, // Define como null por padrão
-      },
-      works: [],
       categories: ["esportes", "pessoas", "escravidão", "cultura"],
       states: [],
-      cities: []
+      cities: [],
     };
   },
   async created() {
     await this.fetchStates();
   },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch("clearMuseumId"); // Limpa o ID do museu ao sair da rota
+    next();
+  },
   methods: {
     async fetchStates() {
-      try {
-        const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
-        const data = await res.json();
-        this.states = data.map(state => ({
-          uf: state.sigla,
-          nome: state.nome
-        }));
-      } catch (error) {
-        console.error("Erro ao carregar estados:", error);
-      }
+      const res = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+      const data = await res.json();
+      this.states = data.map((state) => ({ uf: state.sigla, nome: state.nome }));
     },
-    async onStateChange() {
-      if (!this.museum.state) return;
-      try {
-        const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${this.museum.state}/municipios`);
-        const data = await res.json();
-        this.cities = data.map(city => city.nome);
-        this.museum.city = "";
-      } catch (error) {
-        console.error("Erro ao carregar cidades:", error);
-      }
-    },
-    async deleteObra(id, index) {
-      try {
-        const response = await fetch(`${API_URL}/artworks/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          this.works.splice(index, 1);
-        } else {
-          alert("Erro ao excluir a obra.");
-        }
-      } catch (error) {
-        console.error("Erro ao excluir a obra:", error);
-        alert("Erro ao excluir a obra.");
-      }
-    },
-    onFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.museum.capa = file;
-      }
-    },
-    
     async createMuseum() {
-  if (!this.museum.title || !this.museum.description) {
-    alert("Título e Descrição são obrigatórios.");
-    return;
-  }
+      if (!this.museum.title || !this.museum.description) {
+        alert("Título e Descrição são obrigatórios.");
+        return;
+      }
 
-  // FormData para enviar os dados do museu
-  const formData = new FormData();
-  formData.append("title", this.museum.title);
-  formData.append("description", this.museum.description);
-  formData.append("category1", this.museum.category1);
-  formData.append("category2", this.museum.category2);
-  formData.append("link", this.museum.link);
-  formData.append("address", this.museum.address);
-  formData.append("cep", this.museum.cep);
-  formData.append("city", this.museum.city);
-  formData.append("state", this.museum.state);
-  formData.append("information", this.museum.information);
-  
-  // Adicionar imagem ao FormData (se existir)
-  if (this.museum.capa) {
-    formData.append("image", this.museum.capa);
-  }
+      const formData = new FormData();
+      Object.keys(this.museum).forEach((key) => {
+        if (this.museum[key]) formData.append(key, this.museum[key]);
+      });
 
-  try {
-    // Obtendo o token do Vuex
-    const token = this.$store.state.token;
+      const token = this.$store.state.token;
+      const response = await fetch(`${API_URL}/museums`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-    const response = await fetch(`${API_URL}/museums`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-      },
-      body: formData, // Envia o FormData
-    });
-
-    if (response.ok) {
-      const createdMuseum = await response.json();
-      this.museumId = createdMuseum.id; // Salva o ID do museu criado
-      this.museumCreated = true; // Atualiza o estado para indicar que o museu foi criado
-      alert("Museu criado com sucesso!");
-    } else {
-      const errorResponse = await response.json();
-      alert(`Erro ao cadastrar o museu: ${errorResponse.error}`);
-    }
-  } catch (error) {
-    console.error("Erro ao cadastrar:", error);
-    alert("Erro ao cadastrar o museu.");
-  }
-},
-    openObraModal() {
-      this.showObraModal = true;
-    },
-    closeObraModal() {
-      this.showObraModal = false;
-      this.newObra = {
-        name: "",
-        description: "",
-        author: "",
-        image: ""
-      };
-    },
-    async createObra() {
-  // Validação dos campos obrigatórios
-  if (!this.newObra.name || !this.newObra.description) {
-    alert("Nome da Obra e Descrição são obrigatórios.");
-    return;
-  }
-
-  // Criação dos dados da obra
-  const obraData = {
-    museum_id: this.museumId,
-    name: this.newObra.name.trim(), // Garante que não haja espaços em branco
-    description: this.newObra.description.trim(),
-    author: this.newObra.author?.trim() || "Autor Desconhecido", // Valor padrão para autor
-    active: true, // Valor padrão para ativo
-  };
-
-  // Adicionar imagem se estiver presente
-  if (this.newObra.image) {
-    obraData.image = this.newObra.image;
-  }
-
-  try {
-    // Recuperar o token do Vuex
-    const token = this.$store.state.token;
-
-    // Requisição para a API
-    const response = await fetch(`${API_URL}/artworks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Adicionar o token no cabeçalho
-      },
-      body: JSON.stringify(obraData), // Converte os dados para JSON
-    });
-
-    if (response.ok) {
-      const createdObra = await response.json();
-      this.works.push(createdObra); // Atualiza a lista de obras
-      this.closeObraModal(); // Fecha o modal
-      alert("Obra cadastrada com sucesso!");
-    } else {
-      const errorResponse = await response.json();
-      alert(`Erro ao cadastrar a obra: ${errorResponse.error}`);
-    }
-  } catch (error) {
-    console.error("Erro ao cadastrar obra:", error);
-    alert("Erro ao cadastrar a obra.");
-  }
-},
-    finishRegistration() {
-      alert("Museu criado com sucesso!");
-      this.$router.push("/");
+      if (response.ok) {
+        const createdMuseum = await response.json();
+        this.$store.dispatch("updateMuseumId", createdMuseum.id); // Armazena o ID no Vuex
+        this.museumCreated = true;
+        alert("Museu criado com sucesso!");
+      } else {
+        alert("Erro ao criar o museu.");
+      }
     },
   },
 };

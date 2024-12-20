@@ -123,291 +123,132 @@
       </div>
     </div>
 
-    <div v-if="museumId">
-      <h3>Adicionar Obras</h3>
-      <button class="btn btn-primary" @click="openObraModal">Adicionar Obra</button>
-      <ul class="obra-list" v-if="works.length > 0">
-        <li v-for="(obra, index) in works" :key="obra.id">
-          <strong>{{ obra.name }}</strong> - {{ obra.description }} - {{ obra.author || 'Autor Desconhecido' }} - {{ obra.image }}
-          <a href="#" @click.prevent="deleteObra(obra.id, index)" style="color:red; margin-left:10px;">Excluir</a>
-        </li>
-      </ul>
-    </div>
+    <!-- Componente para adicionar obras -->
+<ArtworkCreate v-if="museumId" :museumId="museumId" />
 
-    <div v-if="showObraModal" class="modal-overlay" @click="closeObraModal">
-      <div class="modal-content" @click.stop>
-        <h4>Adicionar Obra</h4>
-        <label>Nome da Obra</label>
-        <input type="text" v-model="newObra.name" placeholder="Ex. O Grito" required/>
-
-        <label>Descrição</label>
-        <textarea v-model="newObra.description" placeholder="Descrição da obra" required></textarea>
-
-        <label>Autor</label>
-        <input type="text" v-model="newObra.author" placeholder="Ex. Edvard Munch"/>
-
-        <label>Link da Imagem</label>
-        <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
-
-        <button class="btn btn-success my-2" @click="createObra">Salvar Obra</button>
-        <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
-      </div>
-    </div>
-
-    <div class="final-actions" style="text-align:center; margin-top:20px;">
-      <button class="btn btn-success" @click="updateMuseum">Salvar Museu</button>
-      <button class="btn btn-danger" style="margin-left:10px;" @click="deactivateMuseum">Excluir</button>
-    </div>
-
-  </div>
-  <FooterNovo></FooterNovo>
+<div class="final-actions" style="text-align:center; margin-top:20px;">
+  <button class="btn btn-success" @click="updateMuseum">Salvar Museu</button>
+  <button class="btn btn-danger" style="margin-left:10px;" @click="deactivateMuseum">Excluir</button>
+</div>
+</div>
+<FooterNovo></FooterNovo>
 </template>
 
 <script>
 import HeaderNovo from "../Header.vue";
 import FooterNovo from "../Footer.vue";
-import { API_URL } from '@/config';
+import ArtworkCreate from "./ArtworkCreate.vue";
+import { API_URL } from "@/config";
 
 export default {
-  components: { HeaderNovo, FooterNovo },
-  data() {
-    return {
-      museum: {
-        title: "",
-        description: "",
-        category1: "",
-        category2: "",
-        link: "",
-        address: "",
-        cep: "",
-        city: "",
-        state: "",
-        information: "",
-        manager_id: null,
-        capa: null,
-        image: ""
-      },
-      museumId: null,
-      showObraModal: false,
-      newObra: {
-        name: "",
-        description: "",
-        author: "",
-        image: ""
-      },
-      works: [],
-      categories: ["Esportes", "Pessoas", "Escravidao", "Cultura"],
-      states: [],
-      cities: []
-    };
+components: { HeaderNovo, FooterNovo, ArtworkCreate },
+data() {
+return {
+  museum: {
+    title: "",
+    description: "",
+    category1: "",
+    category2: "",
+    link: "",
+    address: "",
+    cep: "",
+    city: "",
+    state: "",
+    information: "",
+    manager_id: null,
+    capa: null,
+    image: "",
   },
-  async created() {
-    this.museumId = this.$route.params.id;
-    await this.fetchMuseum();
-    await this.fetchArtworks();
-    await this.fetchStates();
-  },
-  methods: {
-    async fetchStates() {
-      try {
-        const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
-        const data = await res.json();
-        this.states = data.map(state => ({
-          uf: state.sigla,
-          nome: state.nome
-        }));
-      } catch (error) {
-        console.error("Erro ao carregar estados:", error);
-      }
-    },
-    async onStateChange() {
-      if (!this.museum.state) return;
-      try {
-        const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${this.museum.state}/municipios`);
-        const data = await res.json();
-        this.cities = data.map(city => city.nome);
-        this.museum.city = "";
-      } catch (error) {
-        console.error("Erro ao carregar cidades:", error);
-      }
-    },
-    onFileChange(event) {
-      const file = event.target.files[0];
-      this.museum.capa = file;
-    },
-    async deactivateMuseum() {
-      try {
-        const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: "",
-            description: "",
-            image: "",
-            category1: "",
-            category2: "",
-            link: "",
-            address: "",
-            cep: "",
-            city: "",
-            state: "",
-            information: "",
-            manager_id: null,
-            active: false
-          }),
-        });
-
-        if (response.ok) {
-          alert("Museu desativado com sucesso!");
-          this.$router.push("/museums");
-        } else {
-          alert("Erro ao desativar o museu.");
-        }
-      } catch (error) {
-        console.error("Erro ao desativar:", error);
-        alert("Erro ao desativar o museu.");
-      }
-    },
-    async fetchMuseum() {
-      try {
-        const response = await fetch(`${API_URL}/museums/${this.museumId}`);
-        if (!response.ok) {
-          throw new Error("Erro ao buscar dados do museu");
-        }
-        const data = await response.json();
-        this.museum = {
-          ...this.museum,
-          ...data
-        };
-        if (this.museum.state) {
-          await this.onStateChange();
-        }
-      } catch (error) {
-        console.error("Erro ao carregar dados do museu:", error);
-      }
-    },
-    async fetchArtworks() {
-      try {
-        const response = await fetch(`${API_URL}/artworks/museum/id/${this.museumId}`);
-        if (!response.ok) {
-          throw new Error("Erro ao buscar obras de arte");
-        }
-        this.works = await response.json();
-      } catch (error) {
-        console.error("Erro ao carregar obras:", error);
-      }
-    },
-    async updateMuseum() {
-      if (!this.museum.title || !this.museum.description) {
-        alert("Título e Descrição são obrigatórios.");
-        return;
-      }
-
-      const museumData = {
-        ...this.museum,
-        image: this.museum.capa ? URL.createObjectURL(this.museum.capa) : this.museum.image,
-      };
-
-      try {
-        const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(museumData),
-        });
-
-        if (response.ok) {
-          alert("Museu atualizado com sucesso!");
-        } else {
-          alert("Erro ao atualizar o museu.");
-        }
-      } catch (error) {
-        console.error("Erro ao atualizar:", error);
-        alert("Erro ao atualizar o museu.");
-      }
-    },
-    openObraModal() {
-      this.showObraModal = true;
-    },
-    closeObraModal() {
-      this.showObraModal = false;
-      this.newObra = {
-        name: "",
-        description: "",
-        author: "",
-        image: ""
-      };
-    },
-
-    async createObra() {
-  if (!this.newObra.name || !this.newObra.description) {
-    alert("Nome e Descrição são obrigatórios.");
+  museumId: null,
+  states: [],
+  cities: [],
+};
+},
+async created() {
+this.museumId = parseInt(this.$route.params.id, 10);
+await this.fetchMuseum();
+await this.fetchStates();
+},
+methods: {
+async fetchMuseum() {
+  try {
+    const response = await fetch(`${API_URL}/museums/${this.museumId}`);
+    if (!response.ok) throw new Error("Erro ao buscar dados do museu");
+    const data = await response.json();
+    this.museum = { ...this.museum, ...data };
+    if (this.museum.state) await this.onStateChange();
+  } catch (error) {
+    console.error("Erro ao carregar dados do museu:", error);
+  }
+},
+async fetchStates() {
+  try {
+    const res = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+    const data = await res.json();
+    this.states = data.map((state) => ({ uf: state.sigla, nome: state.nome }));
+  } catch (error) {
+    console.error("Erro ao carregar estados:", error);
+  }
+},
+async onStateChange() {
+  if (!this.museum.state) return;
+  try {
+    const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${this.museum.state}/municipios`);
+    const data = await res.json();
+    this.cities = data.map((city) => city.nome);
+    this.museum.city = "";
+  } catch (error) {
+    console.error("Erro ao carregar cidades:", error);
+  }
+},
+async updateMuseum() {
+  if (!this.museum.title || !this.museum.description) {
+    alert("Título e Descrição são obrigatórios.");
     return;
   }
 
-  // Captura o ID do museu da rota atual
-  const museumId = this.$route.params.id;
-
-  // Criação do payload
-  const obraData = {
-    museum_id: museumId, // Define o ID do museu a partir da rota
-    name: this.newObra.name,
-    description: this.newObra.description,
-    author: this.newObra.author || "Autor Desconhecido",
-    image: this.newObra.image || null, // Pode ser `null` se não for fornecido
-    active: true,
+  const museumData = {
+    ...this.museum,
+    image: this.museum.capa ? URL.createObjectURL(this.museum.capa) : this.museum.image,
   };
 
   try {
-    const token = this.$store.state.token; // Obter token do Vuex
-
-    const response = await fetch(`${API_URL}/artworks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Certifique-se de que o token está correto
-      },
-      body: JSON.stringify(obraData),
+    const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(museumData),
     });
 
     if (response.ok) {
-      const createdObra = await response.json();
-      this.works.push(createdObra); // Atualiza a lista de obras
-      this.closeObraModal(); // Fecha o modal
-      alert("Obra criada com sucesso!");
+      alert("Museu atualizado com sucesso!");
     } else {
-      const errorResponse = await response.json();
-      console.error("Erro ao cadastrar obra:", errorResponse);
-      alert(`Erro ao cadastrar obra: ${errorResponse.message || "Erro desconhecido"}`);
+      alert("Erro ao atualizar o museu.");
     }
   } catch (error) {
-    console.error("Erro ao cadastrar obra:", error);
-    alert("Erro ao cadastrar a obra.");
+    console.error("Erro ao atualizar:", error);
+    alert("Erro ao atualizar o museu.");
   }
 },
+async deactivateMuseum() {
+  try {
+    const response = await fetch(`${API_URL}/museums/${this.museumId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: false }),
+    });
 
-
-
-
-    async deleteObra(id, index) {
-      try {
-        const response = await fetch(`${API_URL}/artworks/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          this.works.splice(index, 1);
-        } else {
-          alert("Erro ao excluir a obra.");
-        }
-      } catch (error) {
-        console.error("Erro ao excluir a obra:", error);
-        alert("Erro ao excluir a obra.");
-      }
-    },
-  },
+    if (response.ok) {
+      alert("Museu desativado com sucesso!");
+      this.$router.push("/museums");
+    } else {
+      alert("Erro ao desativar o museu.");
+    }
+  } catch (error) {
+    console.error("Erro ao desativar:", error);
+    alert("Erro ao desativar o museu.");
+  }
+},
+},
 };
 </script>
 
