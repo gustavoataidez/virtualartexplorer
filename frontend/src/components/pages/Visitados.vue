@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 container p-0" style="width: 100%;">
+  <div class="mt-4 container p-0" style="width: 100%;">
     <div class="grid">
       <div
         v-for="(museum, index) in items"
@@ -7,18 +7,13 @@
         class="box-1"
       >
         <div class="card-container position-relative">
-          <div class="img">
-            <img
-              :src="randomImage()"
-              :alt="'Imagem do ' + museum.title + (index + 1)"
-              class="card-img-top"
-            />
+          <div class="img" :style="{ backgroundImage: `url(${randomImage()})` }">
           </div>
           <div class="card-overlay d-flex flex-column align-items-center justify-content-center">
             <div class="content">
               <h5 class="card-title">{{ truncateTitle(museum.title) }}</h5>
               <span class="text-location">{{ museum.city }}, {{ museum.state }}</span>
-              <p class="text-description">{{ museum.category1 }}, {{ museum.category2 }}</p>
+              <p class="text-description">{{ museum.category1 }} | {{ museum.category2 }}</p>
               <button 
                 class="btn1 btn-primary mt-2"
                 @click="goToMuseum(museum.id)"
@@ -54,43 +49,51 @@ export default {
   },
   methods: {
     truncateTitle(title) {
-      if (title.length > 20) {
-        return title.substring(0, 20) + "...";
+      if (title.length > 30) {
+        return title.substring(0, 30) + '...';
       }
       return title;
     },
     async fetchData() {
-      const url = `${API_URL}/${this.urlAPI}`;
+  const url = `${API_URL}/${this.urlAPI}`;
 
-      try {
-        const response = await axios.get(url);
-        
-        // Atualizado para acessar a chave "museums"
-        if (response.data && Array.isArray(response.data.museums)) {
-          this.items = response.data.museums; // Obtém os museus do array "museums"
-        } else {
-          console.error("Dados inválidos ou formato inesperado:", response.data);
-          this.items = [];
-        }
-      } catch (e) {
-        console.error("Erro ao buscar dados:", e);
+  try {
+    const response = await axios.get(url);
+
+    if (response.data) {
+      if (Array.isArray(response.data.museums)) {
+        // Caso a resposta tenha a chave "museums"
+        this.items = response.data.museums;
+      } else if (Array.isArray(response.data)) {
+        // Caso a resposta seja um array simples
+        this.items = response.data;
+      } else {
+        console.error("Formato de dados inesperado:", response.data);
+        this.items = [];
       }
-    },
+    } else {
+      console.error("Resposta da API está vazia ou inválida");
+      this.items = [];
+    }
+  } catch (e) {
+    console.error("Erro ao buscar dados:", e);
+    this.items = [];
+  }
+},
     randomImage() {
       const images = [
-        '../src/assets/museus/ai/museu-1.jpg',
-        '../src/assets/museus/ai/museu-2.jpg',
-        '../src/assets/museus/ai/museu-3.jpg',
-        '../src/assets/museus/ai/museu-4.jpg',
-        '../src/assets/museus/ai/museu-5.jpg',
-        '../src/assets/museus/ai/museu-6.jpg',
-        '../src/assets/museus/ai/museu-7.jpg',
-        '../src/assets/museus/ai/museu-8.jpg',
-        '../src/assets/museus/ai/museu-10.jpg',
-        '../src/assets/museus/ai/museu-11.jpg',
-        '../src/assets/museus/ai/museu-12.jpg',
-        '../src/assets/museus/ai/museu-13.jpg',
-        '../src/assets/museus/ai/museu-14.jpg'
+        '../../src/assets/museus/ai/museu-1.png',
+        '../../src/assets/museus/ai/museu-2.png',
+        '../../src/assets/museus/ai/museu-3.png',
+        '../../src/assets/museus/ai/museu-4.png',
+        '../../src/assets/museus/ai/museu-5.png',
+        '../../src/assets/museus/ai/museu-6.png',
+        '../../src/assets/museus/ai/museu-7.png',
+        '../../src/assets/museus/ai/museu-10.png',
+        '../../src/assets/museus/ai/museu-11.png',
+        '../../src/assets/museus/ai/museu-12.png',
+        '../../src/assets/museus/ai/museu-13.png',
+        '../../src/assets/museus/ai/museu-14.png'
       ];
       const randomIndex = Math.floor(Math.random() * images.length);
       return images[randomIndex];
@@ -102,9 +105,13 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
+.img {
+  width: 100%;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+}
 /* Estilo opcional para o botão Saber Mais */
 .btn1 {
   text-transform: uppercase;
@@ -123,6 +130,7 @@ export default {
   color: var(--vt-c-brown);
   font-weight: 500;
   font-size: 0.9rem;
+  text-transform: capitalize;
 }
 .grid{
   display: flex;
@@ -136,7 +144,7 @@ export default {
   justify-content: center;
   max-width: 400px;
   min-width: 200px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 .card-container {
   position: relative;
@@ -159,7 +167,7 @@ export default {
 
 .card-title {
   margin-bottom: 0.4rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 

@@ -12,24 +12,24 @@
     <span class="subtitle">Mais procuradas</span>
     <h2 class="title-h2 mb-4">Categorias</h2>
 
-    <div class="d-flex flex-row justify-content-between flex-wrap gap-1">
-      <div id="categ-esportes" class="category" @click="goToCategory('Esportes')">
+    <div class="d-flex flex-row justify-content-between flex-wrap gap-1 mx-2">
+      <div id="categ-esportes" class="category" @click="goToCategory('esportes')">
         <h5 class="categ-title">Esportes</h5>
       </div>
-      <div id="categ-pessoas" class="category" @click="goToCategory('Pessoas')">
+      <div id="categ-pessoas" class="category" @click="goToCategory('pessoas')">
         <h5 class="categ-title">Pessoas</h5>
       </div>
-      <div id="categ-escravidao" class="category" @click="goToCategory('Escravidão')">
+      <div id="categ-escravidao" class="category" @click="goToCategory('escravidao')">
         <h5 class="categ-title">Escravidão</h5>
       </div>
-      <div id="categ-cultura" class="category" @click="goToCategory('Cultura')">
+      <div id="categ-cultura" class="category" @click="goToCategory('cultura')">
         <h5 class="categ-title">Cultura</h5>
       </div>
     </div>
 
-    <div class="mt-5 container p-0" style="width: 100%;">
-      <span class="subtitle">Conheça os museus mais procurados</span>
-      <h2 class="title-h2 mb-0">Mais visitados</h2>
+    <div class="mt-5 container p-0 mb-0" style="width: 100%;">
+      <span class="subtitle">Diversidade em um só lugar</span>
+      <h2 class="title-h2 mb-0">Museus</h2>
     </div>
 
     <Visitados urlAPI="museums"></Visitados>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Visitados from "../Visitados.vue";
+import Visitados from "./Visitados.vue";
 import Footer from "../Footer.vue";
 import HeaderPage from "../Header.vue";
 
@@ -54,12 +54,11 @@ export default {
         "../../src/assets/categorias/categ-escravidao.jpg",
         "../../src/assets/categorias/categ-cultura.jpeg",
       ],
-
     };
   },
   methods: {
     goToCategory(category) {
-      this.$router.push(`/museums/${category}`);
+      this.$router.push(`/museums/category/${category}`);
     }
   },
   

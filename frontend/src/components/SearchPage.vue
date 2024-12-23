@@ -20,7 +20,7 @@
   <Footer></Footer>
 </template>
 <script>
-import Visitados from "./Visitados.vue";
+import Visitados from "./pages/Visitados.vue";
 import Disponivel from "./Disponivel.vue";
 import Footer from "./Footer.vue";
 import Header from "./Header.vue";

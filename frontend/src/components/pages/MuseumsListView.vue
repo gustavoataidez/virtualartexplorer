@@ -15,7 +15,7 @@
   <script>
   import HeaderPage from "../Header.vue";
   import Footer from "../Footer.vue";
-  import Visitados from "../Visitados.vue";
+  import Visitados from "./Visitados.vue";
   
   export default {
     components: {

@@ -17,7 +17,7 @@ export const router = createRouter({
     { path: '/search', component: SearchPage },
     { path: '/museums', component: MuseumsListView },
     { 
-      path: '/museums/:category',
+      path: '/museums/category/:category',
       component: MuseumCategoryView,
       props: true
     },
