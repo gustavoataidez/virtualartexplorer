@@ -1,5 +1,5 @@
 <template>
-  <div class="capa-obra" :style="{ backgroundImage: `url(${artwork.image || 'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/obras/ai/obra-padrao-1.png'})` }">
+  <div class="capa-obra" :style="{ backgroundImage: `url(${artwork.image || 'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/obras/ai/img-obra.png'})` }">
     <div class="column1">
       <h3>{{ artwork.name }}</h3>
       <p>{{ artwork.author || 'Autor Desconhecido' }}</p>
