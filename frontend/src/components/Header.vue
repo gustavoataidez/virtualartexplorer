@@ -4,8 +4,17 @@
   >
     <div class="menu-items">
       <ul class="d-flex flex-row p-0">
-        <li><router-link to="/museums">Museus</router-link></li>
-        <li><router-link class="px-4" to="/artworks">Obras</router-link></li>
+        <!-- Adiciona active-class ao router-link -->
+        <li>
+          <router-link to="/museums" active-class="active-link">
+            Museus
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/artworks" class="px-4" active-class="active-link">
+            Obras
+          </router-link>
+        </li>
       </ul>
     </div>
     <div>
@@ -16,11 +25,11 @@
 
     <!-- Sessão do usuário logado -->
     <div v-if="$store.getters.isLoggedIn" class="my-profile d-flex flex-row p-0 align-items-center">
-  <a class="btn1" v-on:click="openProfile">
-    Olá {{ $store.getters.userFirstName }} (#{{ $store.state.user?.id }})
-  </a>
-  <a class="btn mx-3 btn-danger" v-on:click="logout">Sair</a>
-</div>
+      <a class="btn1" v-on:click="openProfile">
+        Olá {{ $store.getters.userFirstName }} (#{{ $store.state.user?.id }})
+      </a>
+      <a class="btn mx-3 btn-danger" v-on:click="logout">Sair</a>
+    </div>
 
     <!-- Sessão de login e registro -->
     <div v-else class="d-flex flex-row p-0">
@@ -62,9 +71,9 @@ export default {
     };
   },
   mounted() {
-  console.log("Vuex State:", this.$store.state);
-  console.log("Is Logged In:", this.$store.getters.isLoggedIn);
-},
+    console.log("Vuex State:", this.$store.state);
+    console.log("Is Logged In:", this.$store.getters.isLoggedIn);
+  },
   methods: {
     openProfile() {
       this.profileActive = true;
@@ -100,6 +109,10 @@ export default {
 </script>
 
 <style scoped>
+/* Estilo para o link ativo */
+.active-link {
+  font-weight: bold; /* Torna o texto em negrito */
+}
 .fundo {
   position: relative;
   background-color: var(--vt-c-header);
