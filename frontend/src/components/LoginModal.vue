@@ -36,6 +36,7 @@
 
 <script>
 import axios from "axios";
+import { API_URL } from "@/config";
 
 export default {
   name: "LoginModal",
@@ -49,7 +50,7 @@ export default {
   methods: {
     async realizarLogin() {
       try {
-        const response = await axios.post("http://localhost:3000/api/v1/login", {
+        const response = await axios.post(`${API_URL}/login`, {
           email: this.email,
           password: this.password,
         });

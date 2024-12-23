@@ -66,6 +66,7 @@
   
   <script>
   import axios from "axios";
+  import { API_URL } from "@/config";
   
   export default {
     name: "RegisterModal",
@@ -85,7 +86,7 @@
         try {
           // Envia os dados para a API
           const response = await axios.post(
-            "http://localhost:3000/api/v1/managers",
+            `${API_URL}/managers`,
             this.formData
           );
           // Exibe uma mensagem de sucesso

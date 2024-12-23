@@ -17,7 +17,7 @@
     <!-- Sessão do usuário logado -->
     <div v-if="$store.getters.isLoggedIn" class="my-profile d-flex flex-row p-0 align-items-center">
   <a class="btn1" v-on:click="openProfile">
-    Hi, {{ $store.getters.userFirstName }} ({{ $store.state.user?.id }})
+    Olá {{ $store.getters.userFirstName }} (#{{ $store.state.user?.id }})
   </a>
   <a class="btn mx-3 btn-danger" v-on:click="logout">Sair</a>
 </div>
