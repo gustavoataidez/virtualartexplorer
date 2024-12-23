@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,6 +9,20 @@ import (
 
 var DB *gorm.DB
 
+func InitDB() {
+	// Conexão usando uma única variável de ambiente DB_URL
+	dbURL := viper.GetString("DB_URL")
+
+	// Conexão com o banco de dados
+	var err error
+	DB, err = gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
+}
+
+/*
+// Conexão usando variáveis separadas (Comentada)
 func InitDB() {
 	host := viper.GetString("DB_HOST")
 	port := viper.GetString("DB_PORT")
@@ -26,6 +39,7 @@ func InitDB() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 }
+*/
 
 func CreateDatabase() {
 	if DB == nil {
