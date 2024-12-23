@@ -3,13 +3,13 @@
     <Header></Header>
     <div class="museu-page" v-if="museum">
       <div class="sec-resume">
-        <div 
+        <!-- <div 
           class="capa-museu" 
           :style="{ backgroundImage: `url(${museum.image})` }"
-        ></div>
+        ></div> -->
         <div class="resume-desc">
-          <span id="category-museum" class="badge rounded-pill text-bg-warning mb-2"> {{ museum.category1 }} </span> 
-          <span id="category-museum" class="badge rounded-pill text-bg-warning mb-2 mx-1"> {{ museum.category2 }} </span>
+          <span id="category-museum" class="badge rounded-pill text-bg-warning mb-2 text-capitalize fs-6"> {{ museum.category1 }} </span> 
+          <span id="" class="badge rounded-pill text-bg-warning mb-2 mx-1 text-capitalize fs-6"> {{ museum.category2 }} </span>
           <h1>{{ museum.title }}</h1>
           <p>{{ museum.description }}</p>
           <h6 style="font-weight: 600; font-size: 1rem;">Mais informações</h6>
@@ -25,7 +25,7 @@
       </div>
       <div class="sec-obras">
         <span style="font-weight: 600; color: var(--vt-c-brown); line-height: 1rem;">Explore mais</span>
-        <h2 style="line-height: 1.5rem;">Obras do Museu</h2>
+        <h2 style="line-height: 1.5rem; font-weight: 600;">Obras do Museu</h2>
         <div class="grade-obras">
           <BoxArtwork
             v-for="artwork in artworks"
@@ -104,15 +104,19 @@ async fetchArtworks(museumId) {
   .sec-resume {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    gap: 50px;
   }
   .resume-desc {
-    width: 50%;
+    width: 100%;
   }
   .resume-desc p {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+  }
+  .resume-desc h1{
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
   }
   .capa-museu {
     width: 50%;

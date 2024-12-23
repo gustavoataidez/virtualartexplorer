@@ -1,5 +1,5 @@
 <template>
-  <div class="capa-obra" :style="{ backgroundImage: `url(${artwork.image || '../assets/obras/obra-1.jpg'})` }">
+  <div class="capa-obra" :style="{ backgroundImage: `url(${artwork.image || 'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/obras/ai/obra-padrao-1.png'})` }">
     <div class="column1">
       <h3>{{ artwork.name }}</h3>
       <p>{{ artwork.author || 'Autor Desconhecido' }}</p>
@@ -12,7 +12,7 @@
         <p>Autor: {{ artwork.author || 'Autor Desconhecido' }}</p>
         <p>{{ artwork.description }}</p>
         <p>Museu ID: {{ artwork.museum_id }}</p>
-        <img :src="artwork.image || '../assets/obras/obra-1.jpg'" alt="Obra" style="max-width:100%; margin-top:10px;"/>
+        <!-- <img :src="artwork.image || '../assets/obras/obra-1.jpg'" alt="Obra" style="max-width:100%; margin-top:10px;"/> -->
         <button class="btn btn-secondary" @click="closeModal" style="margin-top: 10px;">Fechar</button>
       </div>
     </div>

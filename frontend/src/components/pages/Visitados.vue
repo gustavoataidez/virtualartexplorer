@@ -80,20 +80,20 @@ export default {
     this.items = [];
   }
 },
-    randomImage() {
+randomImage() {
       const images = [
-        '../../src/assets/museus/ai/museu-1.png',
-        '../../src/assets/museus/ai/museu-2.png',
-        '../../src/assets/museus/ai/museu-3.png',
-        '../../src/assets/museus/ai/museu-4.png',
-        '../../src/assets/museus/ai/museu-5.png',
-        '../../src/assets/museus/ai/museu-6.png',
-        '../../src/assets/museus/ai/museu-7.png',
-        '../../src/assets/museus/ai/museu-10.png',
-        '../../src/assets/museus/ai/museu-11.png',
-        '../../src/assets/museus/ai/museu-12.png',
-        '../../src/assets/museus/ai/museu-13.png',
-        '../../src/assets/museus/ai/museu-14.png'
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-1.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-2.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-3.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-4.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-5.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-6.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-7.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-10.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-11.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-12.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-13.png',
+        'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-14.png'
       ];
       const randomIndex = Math.floor(Math.random() * images.length);
       return images[randomIndex];

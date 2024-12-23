@@ -157,10 +157,6 @@
 
         <label>Autor</label>
         <input type="text" v-model="newObra.author" placeholder="Ex. Edvard Munch"/>
-
-        <label>Link da Imagem</label>
-        <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
-
         <button class="btn btn-success my-2" @click="createObra">Salvar Obra</button>
         <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
       </div>

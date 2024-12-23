@@ -2,7 +2,7 @@
   <HeaderNovo></HeaderNovo>
   <div class="museu-page">
     <div class="sec-resume">
-      <div>
+      <!-- <div>
         <p class="form__label">Capa</p>
         <label class="custum-file-upload" for="file">
           <div class="icon">
@@ -19,7 +19,7 @@
           id="file"
           @change="onFileChange"
         />
-      </div>
+      </div> -->
       <div class="resume-desc">
         <div class="form__group field">
           <label for="title" class="form__label">Título</label>
@@ -146,8 +146,14 @@
         <label>Autor</label>
         <input type="text" v-model="newObra.author" placeholder="Ex. Edvard Munch"/>
 
-        <label>Link da Imagem</label>
-        <input type="text" v-model="newObra.image" placeholder="URL da imagem"/>
+        <label>ID do Gerente</label>
+    <input
+      type="number"
+      v-model="museum.manager_id"
+      placeholder="ID do gerente"
+      disabled
+    />
+
 
         <button class="btn btn-success my-2" @click="createObra">Salvar Obra</button>
         <button class="btn btn-danger" @click="closeObraModal">Fechar</button>
@@ -341,55 +347,56 @@ export default {
         image: ""
       };
     },
-
     async createObra() {
-  if (!this.newObra.name || !this.newObra.description) {
-    alert("Nome e Descrição são obrigatórios.");
+  if (!this.newObra.name || !this.newObra.name.trim()) {
+    alert("O campo 'Nome da Obra' é obrigatório.");
     return;
   }
 
-  // Captura o ID do museu da rota atual
-  const museumId = this.$route.params.id;
+  if (!this.newObra.description || !this.newObra.description.trim()) {
+    alert("O campo 'Descrição' é obrigatório.");
+    return;
+  }
 
-  // Criação do payload
   const obraData = {
-    museum_id: museumId, // Define o ID do museu a partir da rota
-    name: this.newObra.name,
-    description: this.newObra.description,
-    author: this.newObra.author || "Autor Desconhecido",
-    image: this.newObra.image || null, // Pode ser `null` se não for fornecido
+    name: this.newObra.name.trim(),
+    description: this.newObra.description.trim(),
+    museum_id: this.museumId,
+    manager_id: this.museum.manager_id, // Inclui o manager_id
+    author: this.newObra.author?.trim() || "Autor Desconhecido",
+    image: this.newObra.image || null,
     active: true,
   };
 
+  console.log("Dados enviados para a API:", obraData);
+
   try {
-    const token = this.$store.state.token; // Obter token do Vuex
+    const token = this.$store.state.token;
 
     const response = await fetch(`${API_URL}/artworks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Certifique-se de que o token está correto
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(obraData),
     });
 
     if (response.ok) {
       const createdObra = await response.json();
-      this.works.push(createdObra); // Atualiza a lista de obras
-      this.closeObraModal(); // Fecha o modal
-      alert("Obra criada com sucesso!");
+      this.works.push(createdObra);
+      alert("Obra cadastrada com sucesso!");
+      this.closeObraModal();
     } else {
       const errorResponse = await response.json();
       console.error("Erro ao cadastrar obra:", errorResponse);
-      alert(`Erro ao cadastrar obra: ${errorResponse.message || "Erro desconhecido"}`);
+      alert(`Erro ao cadastrar obra: ${errorResponse.error || "Erro desconhecido"}`);
     }
   } catch (error) {
     console.error("Erro ao cadastrar obra:", error);
     alert("Erro ao cadastrar a obra.");
   }
 },
-
-
 
 
     async deleteObra(id, index) {
@@ -642,7 +649,7 @@ align-items: center;
 gap: 50px;
 }
 .resume-desc{
-width: 50%;
+width: 80%;
 }
 .resume-desc p{
 font-size: 1.1rem;
