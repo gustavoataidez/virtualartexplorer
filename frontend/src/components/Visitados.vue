@@ -9,7 +9,7 @@
         <div class="card-container position-relative">
           <div class="img">
             <img
-              :src="museum.image"
+              :src="randomImage()"
               :alt="'Imagem do ' + museum.title + (index + 1)"
               class="card-img-top"
             />
@@ -76,12 +76,32 @@ export default {
         console.error("Erro ao buscar dados:", e);
       }
     },
+    randomImage() {
+      const images = [
+        '../src/assets/museus/ai/museu-1.jpg',
+        '../src/assets/museus/ai/museu-2.jpg',
+        '../src/assets/museus/ai/museu-3.jpg',
+        '../src/assets/museus/ai/museu-4.jpg',
+        '../src/assets/museus/ai/museu-5.jpg',
+        '../src/assets/museus/ai/museu-6.jpg',
+        '../src/assets/museus/ai/museu-7.jpg',
+        '../src/assets/museus/ai/museu-8.jpg',
+        '../src/assets/museus/ai/museu-10.jpg',
+        '../src/assets/museus/ai/museu-11.jpg',
+        '../src/assets/museus/ai/museu-12.jpg',
+        '../src/assets/museus/ai/museu-13.jpg',
+        '../src/assets/museus/ai/museu-14.jpg'
+      ];
+      const randomIndex = Math.floor(Math.random() * images.length);
+      return images[randomIndex];
+    },
     goToMuseum(id) {
       this.$router.push(`/museum/${id}`); 
     }
   }
 };
 </script>
+
 
 
 <style scoped>

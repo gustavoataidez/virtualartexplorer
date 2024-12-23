@@ -31,7 +31,7 @@ func main() {
 
 	// Adiciona o middleware de CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://visualartexplorer-nog06gzid-gustavoataidezs-projects.vercel.app", "https://visualartexplorer.vercel.app/", "http://localhost:5173"},
+		AllowOrigins:     []string{"https://visualartexplorer-nog06gzid-gustavoataidezs-projects.vercel.app", "https://visualartexplorer.vercel.app", "http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
