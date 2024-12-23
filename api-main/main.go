@@ -31,12 +31,12 @@ func main() {
 
 	// Adiciona o middleware de CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"https://visualartexplorer-nog06gzid-gustavoataidezs-projects.vercel.app", "http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-	}))
+	}))	
 
 	r.POST("/api/v1/managers", controllers.CreateManager)
 	r.POST("/api/v1/login", controllers.Login)

@@ -1,6 +1,6 @@
 {
-  "name": "museuart",
-  "version": "0.0.0",
+  "name": "museuartexplorer",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -27,6 +27,10 @@
   },
   "description": "This template should help get you started developing with Vue 3 in Vite.",
   "main": "vite.config.js",
-  "author": "",
-  "license": "ISC"
+  "author": "gustavo ataide and andre luiz",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "virtualartexplorer"
+  }
 }
