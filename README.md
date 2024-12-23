@@ -10,7 +10,8 @@
 
 O projeto está disponível para visualização através do seguinte link:
 
-🔗 [https://visualartexplorer.vercel.app/](https://visualartexplorer.vercel.app/)
+Frontend: [https://visualartexplorer.vercel.app/](https://visualartexplorer.vercel.app/)
+Backend: [https://visualartexplorer.onrender.com](https://visualartexplorer.onrender.com)
 
 ## 👥 Integrantes
 
@@ -48,6 +49,37 @@ O projeto está disponível para visualização através do seguinte link:
 ### Passo a Passo
 
 1. **Clone o repositório:**
-   ```bash
+
    git clone https://github.com/seu-usuario/virtual-art-explore.git
    cd virtual-art-explore
+
+Principais Endpoints
+
+  Gerenciamento de Gerentes:
+      POST /api/v1/managers: Cadastro de novo gerente.
+      PUT /api/v1/managers/:id: Atualizar informações do gerente.
+      DELETE /api/v1/managers/:id/disable: Desativar gerente.
+
+  Autenticação:
+      POST /api/v1/login: Login e obtenção de JWT.
+
+  Museus:
+      GET /api/v1/museums: Listar todos os museus.
+      GET /api/v1/museums/city/:city: Filtrar museus por cidade.
+      GET /api/v1/museums/state/:state: Filtrar museus por estado.
+      GET /api/v1/museums/name/:name: Filtrar museus por nome.
+      POST /api/v1/museums: Cadastrar novo museu (Autenticado).
+      PUT /api/v1/museums/:id: Atualizar museu (Autenticado).
+      DELETE /api/v1/museums/:id/disable: Desativar museu (Autenticado).
+
+  Obras de Arte:
+      GET /api/v1/artworks: Listar todas as obras.
+      GET /api/v1/artworks/museum/:name: Filtrar obras por nome do museu.
+      GET /api/v1/artworks/author/:author: Filtrar obras por autor.
+      GET /api/v1/artworks/name/:name: Filtrar obras por nome.
+      GET /api/v1/artworks/year/:year: Filtrar obras por ano.
+      POST /api/v1/artworks: Cadastrar nova obra (Autenticado).
+      PUT /api/v1/artworks/:id: Atualizar obra (Autenticado).
+      DELETE /api/v1/artworks/:id/disable: Desativar obra (Autenticado).
+
+
