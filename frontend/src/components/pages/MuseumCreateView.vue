@@ -197,7 +197,7 @@ export default {
         image: null, // Define como null por padrão
       },
       works: [],
-      categories: ["esportes", "pessoas", "escravidão", "cultura"],
+      categories: ["arte", "pessoas", "afro", "cultura"],
       states: [],
       cities: []
     };

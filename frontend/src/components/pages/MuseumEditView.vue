@@ -202,7 +202,7 @@ export default {
         image: ""
       },
       works: [],
-      categories: ["Esportes", "Pessoas", "Escravidao", "Cultura"],
+      categories: ["Arte", "Pessoas", "Afro", "Cultura"],
       states: [],
       cities: []
     };

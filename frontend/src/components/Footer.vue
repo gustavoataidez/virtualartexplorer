@@ -3,7 +3,7 @@
   <footer class="text-center text-sm-start bg-body-tertiary text-muted">
     <!-- Section: Social media -->
     <section
-      class="d-flex justify-content-center justify-content-lg-between p-3"
+      class="d-flex justify-content-center justify-content-lg-between"
     >
       <!-- Right -->
       <div>
@@ -95,11 +95,11 @@
     <!-- Section: Links  -->
 
     <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.04); color: var(--vt-c-brown);">
-      © 2021 Copyright:
-      <a class="text-reset fw-bold" href="https://mdbootstrap.com/"
-        >Museu Art Explorer</a
-      >
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1); color: var(--vt-c-brown);">
+      © 2024 Copyright:
+      <a class="text-reset fw-bold" href="https://github.com/gustavoataidez/virtualartexplorer"
+        >Virtual Art Explorer.</a
+      > Todos os direitos reservados.
     </div>
     <!-- Copyright -->
   </footer>

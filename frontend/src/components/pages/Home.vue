@@ -6,21 +6,29 @@
       Tenha uma incrível <br />
       <span>experiência</span> aqui!
     </h1>
+    <div class="search">
+      <input
+        v-model="valor"
+        placeholder="Pesquise..."
+        type="text"
+      />
+      <button type="submit" @click="goToSearch">Buscar</button>
+    </div>
   </div>
 
   <div class="page container-sm px-5 my-5">
     <span class="subtitle">Mais procuradas</span>
     <h2 class="title-h2 mb-4">Categorias</h2>
-
+    <!-- Categorias -->
     <div class="d-flex flex-row justify-content-between flex-wrap gap-1 mx-2">
-      <div id="categ-esportes" class="category" @click="goToCategory('esportes')">
-        <h5 class="categ-title">Esportes</h5>
+      <div id="categ-arte" class="category" @click="goToCategory('arte')">
+        <h5 class="categ-title">Arte</h5>
       </div>
       <div id="categ-pessoas" class="category" @click="goToCategory('pessoas')">
         <h5 class="categ-title">Pessoas</h5>
       </div>
-      <div id="categ-escravidao" class="category" @click="goToCategory('escravidao')">
-        <h5 class="categ-title">Escravidão</h5>
+      <div id="categ-escravidao" class="category" @click="goToCategory('afro')">
+        <h5 class="categ-title">Afro</h5>
       </div>
       <div id="categ-cultura" class="category" @click="goToCategory('cultura')">
         <h5 class="categ-title">Cultura</h5>
@@ -47,25 +55,66 @@ export default {
   components: { Visitados, Footer, HeaderPage },
   data() {
     return {
-    valor: "",
-    images: [
-        "../../src/assets/categorias/categ-esportes.jpg",
-        "../../src/assets/categorias/categ-pessoas.jpg",
-        "../../src/assets/categorias/categ-escravidao.jpg",
-        "../../src/assets/categorias/categ-cultura.jpeg",
-      ],
+      valor: "",
     };
   },
   methods: {
     goToCategory(category) {
       this.$router.push(`/museums/category/${category}`);
-    }
+    },
+
+    goToSearch() {
+      if (this.valor.trim() !== "") {
+        this.$router.push({ path: "/search", query: { q: this.valor } });
+      }
+    },
   },
-  
 };
 </script>
 
+
 <style>
+/* From Uiverse.io by Bodyhc */ 
+.search {
+  display: inline-block;
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.search input[type="text"] {
+  width: 500px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #EAEAEA;
+}
+
+.search button[type="submit"] {
+  background-color: var(--vt-c-header);
+  border: none;
+  color: var(--vt-c-brown);
+  font-weight: 400;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.search button[type="submit"]:hover {
+  color: rgb(255, 255, 255);
+  background-color: var(--vt-c-brown);
+}
+
+
+
+
+
 .categ-title {
   font-family: "Poppins";
   color: white;
@@ -75,13 +124,14 @@ export default {
 .category {
   background-size: cover;
   background-position: center;
-  height: 100px;
-  border-radius: 20px;
+  height: 80px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 23%;
   min-width: 200px;
+  margin: 0px 6px;
 }
 .category:hover {
   cursor: pointer;
@@ -102,14 +152,14 @@ export default {
   height: 400px;
   gap: 20px;
 }
-#categ-esportes {
-  background-image: url("../../assets/categorias/categ-esportes.jpg");
+#categ-arte {
+  background-image: url("../../assets/categorias/categ-artes.jpg");
 }
 #categ-pessoas {
   background-image: url("../../assets/categorias/categ-pessoas.jpg");
 }
 #categ-escravidao {
-  background-image: url("../../assets/categorias/categ-escravidao.jpg");
+  background-image: url("../../assets/categorias/categ-afro.png");
 }
 #categ-cultura {
   background-image: url("../../assets/categorias/categ-cultura2.jpg");
@@ -153,8 +203,8 @@ export default {
   position: relative;
   color: white;
   text-align: center;
-  font-size: 3.5rem;
-  font-weight: 500;
+  font-size: 3.2rem;
+  font-weight: 600;
   font-family: "Poppins", sans-serif;
 }
 
@@ -180,6 +230,11 @@ select:focus {
 }
 
 @media screen and (max-width: 768px) {
+
+.search input[type="text"] {
+  width: 90vw;
+  max-width: 450px;
+}
   .image-text {
     font-size: 2.5rem;
   }

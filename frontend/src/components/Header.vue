@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fundo d-flex flex-row align-items-center justify-content-around align-items-baseline py-3"
+    class="fundo d-flex flex-row align-items-center justify-content-around align-items-baseline py-2"
   >
     <div class="menu-items">
       <ul class="d-flex flex-row p-0">
@@ -118,10 +118,11 @@ export default {
   background-color: var(--vt-c-header);
   width: 100%;
   z-index: 20;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.12);
 }
 .logo {
   width: 100%;
-  max-width: 180px;
+  max-width: 150px;
 }
 a {
   color: var(--vt-c-brown);

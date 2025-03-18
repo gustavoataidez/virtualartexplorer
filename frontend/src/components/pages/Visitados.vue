@@ -2,18 +2,23 @@
   <div class="mt-4 container p-0" style="width: 100%;">
     <div class="grid">
       <div
-        v-for="(museum, index) in items"
+        v-for="(museum, index) in displayedMuseums"
         :key="museum.id"
         class="box-1"
       >
         <div class="card-container position-relative">
-          <div class="img" :style="{ backgroundImage: `url(${randomImage()})` }">
+          <div 
+            class="img" 
+            :style="{ backgroundImage: `url(${museum.image ? museum.image : randomImage()})` }"
+          >
           </div>
           <div class="card-overlay d-flex flex-column align-items-center justify-content-center">
             <div class="content">
               <h5 class="card-title">{{ truncateTitle(museum.title) }}</h5>
               <span class="text-location">{{ museum.city }}, {{ museum.state }}</span>
-              <p class="text-description">{{ museum.category1 }} | {{ museum.category2 }}</p>
+              <p class="text-description">
+                {{ museum.category.join(" | ") }}
+              </p>
               <button 
                 class="btn1 btn-primary mt-2"
                 @click="goToMuseum(museum.id)"
@@ -36,51 +41,70 @@ export default {
   props: {
     urlAPI: {
       type: String,
-      required: true
+      required: false, // Não é mais obrigatório, pois pode receber museus via prop
+      default: ""
+    },
+    museus: {
+      type: Array,
+      required: false, // Nova prop para receber museus diretamente
+      default: () => []
     }
   },
   data() {
     return {
-      items: [] // Lista de museus
+      items: [] // Lista de museus carregados da API (caso a prop `museus` não seja usada)
     };
   },
   mounted() {
-    this.fetchData();
+    // Se a prop `museus` não for fornecida, carregue os museus da API
+    if (this.museus.length === 0 && this.urlAPI) {
+      this.fetchData();
+    }
+  },
+  computed: {
+    // Computed property que retorna os itens embaralhados
+    shuffledItems() {
+      return this.items.sort(() => Math.random() - 0.5);
+    },
+    // Computed property que decide quais museus exibir
+    displayedMuseums() {
+      return this.museus.length > 0 ? this.museus : this.shuffledItems;
+    }
   },
   methods: {
     truncateTitle(title) {
-      if (title.length > 30) {
-        return title.substring(0, 30) + '...';
+      if (title.length > 26) {
+        return title.substring(0, 26) + '...';
       }
       return title;
     },
     async fetchData() {
-  const url = `${API_URL}/${this.urlAPI}`;
+      const url = `${API_URL}/${this.urlAPI}`;
 
-  try {
-    const response = await axios.get(url);
-
-    if (response.data) {
-      if (Array.isArray(response.data.museums)) {
-        // Caso a resposta tenha a chave "museums"
-        this.items = response.data.museums;
-      } else if (Array.isArray(response.data)) {
-        // Caso a resposta seja um array simples
-        this.items = response.data;
-      } else {
-        console.error("Formato de dados inesperado:", response.data);
+      try {
+        const response = await axios.get(url);
+        console.log(response.data); // Verifique os dados retornados
+        if (response.data) {
+          if (Array.isArray(response.data.museums)) {
+            // Caso a resposta tenha a chave "museums"
+            this.items = response.data.museums;
+          } else if (Array.isArray(response.data)) {
+            // Caso a resposta seja um array simples
+            this.items = response.data;
+          } else {
+            console.error("Formato de dados inesperado:", response.data);
+            this.items = [];
+          }
+        } else {
+          console.error("Resposta da API está vazia ou inválida");
+          this.items = [];
+        }
+      } catch (e) {
+        console.error("Erro ao buscar dados:", e);
         this.items = [];
       }
-    } else {
-      console.error("Resposta da API está vazia ou inválida");
-      this.items = [];
-    }
-  } catch (e) {
-    console.error("Erro ao buscar dados:", e);
-    this.items = [];
-  }
-},
-randomImage() {
+    },
+    randomImage() {
       const images = [
         'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-1.png',
         'https://raw.githubusercontent.com/gustavoataidez/visualartexplorer/refs/heads/main/frontend/src/assets/museus/ai/museu-2.png',
@@ -99,7 +123,7 @@ randomImage() {
       return images[randomIndex];
     },
     goToMuseum(id) {
-      this.$router.push(`/museum/${id}`); 
+      this.$router.push(`/museum/${id}`);
     }
   }
 };
@@ -108,7 +132,7 @@ randomImage() {
 <style scoped>
 .img {
   width: 100%;
-  height: 150px;
+  height: 250px;
   background-size: cover;
   background-position: center;
 }
@@ -116,7 +140,7 @@ randomImage() {
 .btn1 {
   text-transform: uppercase;
   font-size: 0.85rem;
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 1rem;
   border-radius: 10px;
   background-color: #fff;
   font-family: 'poppins';
@@ -157,7 +181,7 @@ randomImage() {
   margin-top: -50px;
   width: 100%; /* Ajuste conforme necessário */
   background-color: rgba(255, 255, 255, 1);
-  padding: 10px 15px;
+  padding: 10px 10px;
   border-radius: 16px;
   z-index: 5;
   color: var(--vt-c-brown);
@@ -166,9 +190,9 @@ randomImage() {
 }
 
 .card-title {
-  margin-bottom: 0.4rem;
-  font-size: 1.5rem;
-  font-weight: 600;
+  margin-bottom: 0.2rem;
+  font-size: 1.0rem;
+  font-weight: 700;
 }
 
 .content {

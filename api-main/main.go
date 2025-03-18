@@ -71,5 +71,5 @@ func main() {
 	// Adiciona a nova rota para listar museus do usuário autenticado
 	auth.GET("/museums/my", controllers.GetMuseumsByAuthenticatedUser)
 
-	r.Run(":8080")
+	r.Run(":5501")
 }
